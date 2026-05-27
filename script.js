@@ -4,9 +4,29 @@ console.log("BOOT SCRIPT LOADED");
    DOM ELEMENTS
 ========================= */
 
-const continueBtn = document.getElementById("continueBtn");
-const bootScreen = document.getElementById("bootScreen");
-const terminalSection = document.getElementById("terminalSection");
+window.addEventListener("DOMContentLoaded", () => {
+
+    console.log("DOM READY");
+
+    const continueBtn = document.getElementById("continueBtn");
+    const bootScreen = document.getElementById("bootScreen");
+    const terminalSection = document.getElementById("terminalSection");
+
+    if (!continueBtn || !bootScreen || !terminalSection) {
+        console.error("BOOT ELEMENT MISSING");
+        return;
+    }
+
+    continueBtn.addEventListener("click", () => {
+
+        console.log("ENTER TERMINAL CLICKED");
+
+        bootScreen.style.display = "none";
+        terminalSection.classList.remove("hidden");
+
+    });
+
+});
 
 const metabolism = document.getElementById("metabolism");
 const atpLevel = document.getElementById("atpLevel");
