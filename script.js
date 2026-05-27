@@ -130,20 +130,45 @@ function animatePhageAttack() {
 
             setTimeout(() => {
 
-                infectionData.rnaInsideCell = true;
+               setTimeout(() => {
 
-                viralRNA.style.opacity = "1";
-                viralRNA.style.width = "140px";
+    infectionData.rnaInsideCell = true;
 
-                simulationLog.innerHTML += `
-                <br><br>RNA TRANSFER COMPLETE:<br>
-                Viral genome successfully injected into host cytoplasm.
-                `;
+    viralRNA.style.opacity = "1";
+    viralRNA.style.width = "140px";
 
-            }, 600);
+    simulationLog.innerHTML += `
+    <br><br>RNA TRANSFER COMPLETE:<br>
+    Viral genome successfully injected into host cytoplasm.
+    `;
+
+    /* =========================
+       VIRUS DISASSEMBLY (ADD HERE)
+    ========================== */
+    setTimeout(() => {
+
+        const capsid = document.querySelector(".capsidGlass");
+        const tail = document.querySelector(".tailSheath");
+        const needle = document.querySelector(".tailNeedle");
+
+        if (capsid) {
+            capsid.style.transform = "translateY(-40px) scale(0.7)";
+            capsid.style.opacity = "0.4";
         }
 
-    }, 3300);
+        if (tail) {
+            tail.style.transform = "translateY(60px) rotate(20deg)";
+            tail.style.opacity = "0.3";
+        }
+
+        if (needle) {
+            needle.style.transform = "translateY(80px)";
+            needle.style.opacity = "0.2";
+        }
+
+    }, 900);
+
+}, 600);
 
     /* =========================
        CAMERA ZOOM OUT (ADD HERE)
