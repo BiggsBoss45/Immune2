@@ -89,7 +89,36 @@
         </section>
 
     </section>
+<!-- =========================
+     INFECTION SIMULATION
+========================= -->
 
+<section id="infectionLab">
+
+    <h2>Cell Infection Simulator</h2>
+
+    <div class="simulationArea">
+
+        <!-- CELL -->
+        <div id="cell">
+            <div id="nucleus"></div>
+            <div id="dna"></div>
+        </div>
+
+        <!-- VIRUS -->
+        <div id="virus"></div>
+
+        <!-- RNA -->
+        <div id="rna"></div>
+
+    </div>
+
+    <div class="controls">
+        <button onclick="startInfection()">START INFECTION</button>
+        <button onclick="triggerLysis()">FORCE LYSIS</button>
+    </div>
+
+</section>
 
     <script src="script.js"></script>
 </body>
