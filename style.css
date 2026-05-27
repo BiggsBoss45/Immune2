@@ -815,5 +815,10 @@ body::after{
     pointer-events:none;
 }
 
+#continueBtn{
+    position:relative;
+    z-index:99999;
+    pointer-events:auto;
+}
 /* REMOVE THIS (INVALID CSS) */
 /* .simulationArea * { max-z-index:10; } */
