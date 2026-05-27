@@ -218,3 +218,43 @@ openArchiveBtn.addEventListener("click", () => {
     window.location.href = "finalfile.html";
 
 });
+
+const simulationArea = document.querySelection(".simulationArea");
+function cinematicInfection(){
+   resetSimulation();
+   simulation.Area.classList.remove("zoomOut");
+     simulation.Area.classList.add("zoomIn");
+
+   phage.animate([
+      {
+         left:"-250px"
+      },
+      {
+         left:"28%"
+      }
+   ], {
+      duration:3500,
+      fill:"forwards"
+   });
+
+   setTimeout(() => {
+      e.coli.classList.add("injected");
+      viralRNA.style.opacity = "1";
+      viralRNA.animate([
+         {
+            width:"0px"
+         },
+         {
+            width:"260px"
+         }
+         ],{
+         duration:1700,
+         fill:"forwards"
+      });
+   },3600);
+
+   setTimeout(() => {
+      simulationArea.classList.remove("zoomIn");
+      simulationArea.classList.add("zoomOut");
+   }, 6200);
+}
