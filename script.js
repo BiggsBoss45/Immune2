@@ -1,14 +1,12 @@
 console.log("BOOT SCRIPT LOADED");
 
+/* =========================
+   DOM ELEMENTS
+========================= */
+
 const continueBtn = document.getElementById("continueBtn");
 const bootScreen = document.getElementById("bootScreen");
 const terminalSection = document.getElementById("terminalSection");
-
-console.log({
-    continueBtn,
-    bootScreen,
-    terminalSection
-});
 
 const metabolism = document.getElementById("metabolism");
 const atpLevel = document.getElementById("atpLevel");
@@ -26,20 +24,12 @@ const secretSection = document.getElementById("secretSection");
 const openArchiveBtn = document.getElementById("openArchiveBtn");
 
 /* =========================
-   BOOT
+   BOOT (SAFE)
 ========================= */
 
 window.addEventListener("DOMContentLoaded", () => {
 
-    const continueBtn = document.getElementById("continueBtn");
-    const bootScreen = document.getElementById("bootScreen");
-    const terminalSection = document.getElementById("terminalSection");
-
-    console.log("BOOT ELEMENTS READY", {
-        continueBtn,
-        bootScreen,
-        terminalSection
-    });
+    console.log("DOM READY");
 
     if (!continueBtn || !bootScreen || !terminalSection) {
         console.error("BOOT ELEMENT MISSING");
@@ -61,7 +51,9 @@ window.addEventListener("DOMContentLoaded", () => {
    RESET
 ========================= */
 
-function resetSimulation(){
+function resetSimulation() {
+
+    if (!ecoli || !viralRNA || !phage) return;
 
     ecoli.classList.remove(
         "successState",
@@ -79,170 +71,161 @@ function resetSimulation(){
    PHAGE ATTACK
 ========================= */
 
-function animatePhageAttack(){
+function animatePhageAttack() {
+
+    if (!phage) return;
 
     phage.animate([
-    {
-        left:"-180px",
-        top:"32%"
-    },
-    {
-        left:"43%",
-        top:"30%"
-    }
-], {
-    duration:3200,
-    fill:"forwards",
-    easing:"ease-in-out"
-});
-
+        {
+            left: "-180px",
+            top: "32%"
+        },
+        {
+            left: "43%",
+            top: "30%"
+        }
+    ], {
+        duration: 3200,
+        fill: "forwards",
+        easing: "ease-in-out"
+    });
 
     setTimeout(() => {
 
-    /* EXTEND NEEDLE */
+        const needle = document.querySelector(".tailNeedle");
 
-    document.querySelector(".tailNeedle")
-    .animate([
-        {
-            height:"50px"
-        },
-        {
-            height:"110px"
+        if (needle) {
+            needle.animate([
+                { height: "50px" },
+                { height: "110px" }
+            ], {
+                duration: 700,
+                fill: "forwards",
+                easing: "ease-out"
+            });
         }
-    ], {
-        duration:700,
-        fill:"forwards",
-        easing:"ease-out"
-    });
 
-    /* CELL STUTTER */
+        if (ecoli) {
+            ecoli.classList.add("injected");
+        }
 
-    ecoli.classList.add("injected");
-
-}, 3300);
+    }, 3300);
 }
 
 /* =========================
    MAIN SIMULATION
 ========================= */
 
-runBtn.addEventListener("click", () => {
+if (runBtn) {
 
-    resetSimulation();
+    runBtn.addEventListener("click", () => {
 
-    const m = metabolism.value;
-    const a = atpLevel.value;
-    const r = ribosomeState.value;
-    const d = repairPathway.value;
+        resetSimulation();
 
-    secretSection.classList.add("hidden");
+        const m = metabolism?.value;
+        const a = atpLevel?.value;
+        const r = ribosomeState?.value;
+        const d = repairPathway?.value;
 
-    animatePhageAttack();
+        if (secretSection) {
+            secretSection.classList.add("hidden");
+        }
 
+        animatePhageAttack();
 
-    /* SUCCESS */
+        /* SUCCESS */
+        if (
+            m === "respiration" &&
+            a === "high" &&
+            r === "active" &&
+            d === "recombinational"
+        ) {
+            setTimeout(() => {
 
-    if(
-        m === "respiration" &&
-        a === "high" &&
-        r === "active" &&
-        d === "recombinational"
-    ){
+                if (ecoli) ecoli.classList.add("successState");
 
-        setTimeout(() => {
+                simulationLog.innerHTML = `
+                STABLE INTEGRATION ACHIEVED<br><br>
+                Viral RNA successfully integrated into bacterial nucleoid.<br>
+                ATP reserves sufficient for phage replication.<br>
+                Recombinant strain stabilized.
+                `;
 
-            ecoli.classList.add("successState");
+                setTimeout(() => {
+                    if (secretSection) {
+                        secretSection.classList.remove("hidden");
+                    }
+                }, 2500);
 
-            simulationLog.innerHTML = `
-            STABLE INTEGRATION ACHIEVED<br><br>
-            Viral RNA successfully integrated into bacterial nucleoid.<br>
-            ATP reserves sufficient for phage replication.<br>
-            Recombinant strain stabilized.
-            `;
+            }, 4300);
+
+            return;
+        }
+
+        /* LYSIS */
+        if (a === "high" && r === "active") {
 
             setTimeout(() => {
-                secretSection.classList.remove("hidden");
-            }, 2500);
 
-        }, 4300);
+                if (ecoli) ecoli.classList.add("lysisState");
 
-        return;
-    }
+                simulationLog.innerHTML = `
+                LYTIC CASCADE INITIATED<br><br>
+                Uncontrolled phage replication detected.<br>
+                Cell membrane rupture imminent.
+                `;
 
+            }, 4300);
 
-    /* LYSIS */
+            return;
+        }
 
-    if(
-        a === "high" &&
-        r === "active"
-    ){
+        /* LOW ATP */
+        if (a === "low") {
 
+            setTimeout(() => {
+
+                if (ecoli) ecoli.classList.add("failureState");
+
+                simulationLog.innerHTML = `
+                DORMANT INFECTION DETECTED<br><br>
+                ATP depletion prevents replication.
+                Viral genome remains inactive.
+                `;
+
+            }, 4300);
+
+            return;
+        }
+
+        /* DNA DAMAGE */
+        if (d === "errorprone") {
+
+            setTimeout(() => {
+
+                if (ecoli) ecoli.classList.add("failureState");
+
+                simulationLog.innerHTML = `
+                GENOMIC INSTABILITY DETECTED<br><br>
+                Error-prone DNA repair introduced lethal mutations.
+                `;
+
+            }, 4300);
+
+            return;
+        }
+
+        /* DEFAULT FAILURE */
         setTimeout(() => {
 
-            ecoli.classList.add("lysisState");
+            if (ecoli) ecoli.classList.add("failureState");
 
             simulationLog.innerHTML = `
-            LYTIC CASCADE INITIATED<br><br>
-            Uncontrolled phage replication detected.<br>
-            Cell membrane rupture imminent.
+            INFECTION FAILED<br><br>
+            Host-cell environment incompatible with phage integration.
             `;
 
         }, 4300);
 
-        return;
-    }
-
-
-    /* LOW ATP */
-
-    if(a === "low"){
-
-        setTimeout(() => {
-
-            ecoli.classList.add("failureState");
-
-            simulationLog.innerHTML = `
-            DORMANT INFECTION DETECTED<br><br>
-            ATP depletion prevents replication.
-            Viral genome remains inactive.
-            `;
-
-        }, 4300);
-
-        return;
-    }
-
-
-    /* DNA DAMAGE */
-
-    if(d === "errorprone"){
-
-        setTimeout(() => {
-
-            ecoli.classList.add("failureState");
-
-            simulationLog.innerHTML = `
-            GENOMIC INSTABILITY DETECTED<br><br>
-            Error-prone DNA repair introduced lethal mutations.
-            `;
-
-        }, 4300);
-
-        return;
-    }
-
-
-    /* DEFAULT FAILURE */
-
-    setTimeout(() => {
-
-        ecoli.classList.add("failureState");
-
-        simulationLog.innerHTML = `
-        INFECTION FAILED<br><br>
-        Host-cell environment incompatible with phage integration.
-        `;
-
-    }, 4300);
-
-});
+    });
+}
