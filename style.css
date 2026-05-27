@@ -116,6 +116,9 @@ header h1{
     black 70%);
 }
 
+.simulationArea{
+    clip-path:inset(0 round 0px);
+}
 /* E COLI */
 
 #ecoli{
@@ -606,4 +609,59 @@ header h1{
     background:black;
 
     padding-top:25px;
+}
+
+/* MAIN SIMULATION CONTAINER */
+
+.simulationArea{
+    position:relative;
+    overflow:hidden;
+
+    z-index:1;
+}
+
+/* CAMERA CONTENT */
+
+#cameraLayer{
+    position:absolute;
+    inset:0;
+
+    z-index:2;
+}
+
+/* E.COLI + PHAGE */
+
+#ecoli,
+#phage,
+#viralRNA{
+    position:absolute;
+
+    z-index:3;
+}
+
+/* UI CONTROLS */
+
+.bioControls,
+.controls,
+#simulationLog{
+    position:relative;
+
+    z-index:20;
+}
+
+/* BUTTONS */
+
+button,
+select{
+    position:relative;
+
+    z-index:25;
+}
+
+/* MICROSCOPE OVERLAY */
+
+body::before,
+body::after{
+    z-index:100;
+    pointer-events:none;
 }
