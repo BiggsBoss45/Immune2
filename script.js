@@ -1,13 +1,14 @@
 console.log("BOOT SCRIPT LOADED");
 
+const continueBtn = document.getElementById("continueBtn");
+const bootScreen = document.getElementById("bootScreen");
+const terminalSection = document.getElementById("terminalSection");
+
 console.log({
     continueBtn,
     bootScreen,
     terminalSection
 });
-const continueBtn = document.getElementById("continueBtn");
-const bootScreen = document.getElementById("bootScreen");
-const terminalSection = document.getElementById("terminalSection");
 
 const metabolism = document.getElementById("metabolism");
 const atpLevel = document.getElementById("atpLevel");
