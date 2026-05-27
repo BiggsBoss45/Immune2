@@ -209,26 +209,33 @@ if (runBtn) {
             r === "active" &&
             d === "recombinational"
         ) {
-            setTimeout(() => {
+           setTimeout(() => {
 
-                if (ecoli) ecoli.classList.add("successState");
+    if (ecoli) ecoli.classList.add("successState");
 
-                simulationLog.innerHTML = `
-                STABLE INTEGRATION ACHIEVED<br><br>
-                Viral RNA successfully integrated into bacterial nucleoid.<br>
-                ATP reserves sufficient for phage replication.<br>
-                Recombinant strain stabilized.
-                `;
+    const mito = document.getElementById("mitochondrion");
 
-                setTimeout(() => {
-                    if (secretSection) {
-                        secretSection.classList.remove("hidden");
-                    }
-                }, 2500);
+    if (mito) {
+        mito.classList.add("mitochondriaFormed");
+    }
 
-            }, 4300);
+    simulationLog.innerHTML = `
+    STABLE INTEGRATION ACHIEVED<br><br>
+    Viral RNA successfully integrated into bacterial nucleoid.<br>
+    ATP reserves sufficient for phage replication.<br>
+    Recombinant strain stabilized.<br><br>
+    SYMBIOTIC SHIFT DETECTED: Mitochondrion formation initiated.
+    `;
 
-            return;
+    setTimeout(() => {
+        if (secretSection) {
+            secretSection.classList.remove("hidden");
+        }
+    }, 2500);
+
+}, 4300);
+
+return;
         }
 
         /* LYSIS */
