@@ -23,6 +23,11 @@ const runBtn = document.getElementById("runBtn");
 const secretSection = document.getElementById("secretSection");
 const openArchiveBtn = document.getElementById("openArchiveBtn");
 
+let infectionData = {
+    injected: false,
+    rnaInsideCell: false
+};
+
 /* =========================
    BOOT (SAFE)
 ========================= */
@@ -75,6 +80,7 @@ function animatePhageAttack() {
 
     if (!phage) return;
 
+    /* PHAGE MOVEMENT */
     phage.animate([
         {
             left: "-180px",
@@ -90,6 +96,19 @@ function animatePhageAttack() {
         easing: "ease-in-out"
     });
 
+    /* =========================
+       CAMERA ZOOM IN (ADD HERE)
+    ========================== */
+    setTimeout(() => {
+
+        const camera = document.getElementById("cameraLayer");
+        if (camera) camera.classList.add("zoomedIn");
+
+    }, 1200);
+
+    /* =========================
+       INJECTION SEQUENCE
+    ========================== */
     setTimeout(() => {
 
         const needle = document.querySelector(".tailNeedle");
@@ -106,10 +125,35 @@ function animatePhageAttack() {
         }
 
         if (ecoli) {
-            ecoli.classList.add("injected");
+
+            infectionData.injected = true;
+
+            setTimeout(() => {
+
+                infectionData.rnaInsideCell = true;
+
+                viralRNA.style.opacity = "1";
+                viralRNA.style.width = "140px";
+
+                simulationLog.innerHTML += `
+                <br><br>RNA TRANSFER COMPLETE:<br>
+                Viral genome successfully injected into host cytoplasm.
+                `;
+
+            }, 600);
         }
 
     }, 3300);
+
+    /* =========================
+       CAMERA ZOOM OUT (ADD HERE)
+    ========================== */
+    setTimeout(() => {
+
+        const camera = document.getElementById("cameraLayer");
+        if (camera) camera.classList.remove("zoomedIn");
+
+    }, 5000);
 }
 
 /* =========================
