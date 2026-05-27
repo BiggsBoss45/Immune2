@@ -1,3 +1,10 @@
+console.log("BOOT SCRIPT LOADED");
+
+console.log({
+    continueBtn,
+    bootScreen,
+    terminalSection
+});
 const continueBtn = document.getElementById("continueBtn");
 const bootScreen = document.getElementById("bootScreen");
 const terminalSection = document.getElementById("terminalSection");
@@ -21,10 +28,31 @@ const openArchiveBtn = document.getElementById("openArchiveBtn");
    BOOT
 ========================= */
 
-continueBtn.addEventListener("click", () => {
+window.addEventListener("DOMContentLoaded", () => {
 
-    bootScreen.style.display = "none";
-    terminalSection.classList.remove("hidden");
+    const continueBtn = document.getElementById("continueBtn");
+    const bootScreen = document.getElementById("bootScreen");
+    const terminalSection = document.getElementById("terminalSection");
+
+    console.log("BOOT ELEMENTS READY", {
+        continueBtn,
+        bootScreen,
+        terminalSection
+    });
+
+    if (!continueBtn || !bootScreen || !terminalSection) {
+        console.error("BOOT ELEMENT MISSING");
+        return;
+    }
+
+    continueBtn.addEventListener("click", () => {
+
+        console.log("ENTER TERMINAL CLICKED");
+
+        bootScreen.style.display = "none";
+        terminalSection.classList.remove("hidden");
+
+    });
 
 });
 
