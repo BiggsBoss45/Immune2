@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHASE 3 // ACCESS TERMINAL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BACKGROUND EFFECT -->
+    <div class="scanlines"></div>
+
+    <!-- BOOT SCREEN -->
+    <section id="bootScreen">
+        <div class="bootBox">
+            <h1>RECOVERY NODE // PHASE 3</h1>
+            <p id="bootText">Initializing secure recovery environment...</p>
+            <button id="continueBtn">ENTER TERMINAL</button>
+        </div>
+    </section>
+
+
+    <!-- MAIN TERMINAL -->
+    <section id="terminalSection" class="hidden">
+
+        <header>
+            <h1>PHASE 3 // DECRYPTION TERMINAL</h1>
+            <p>Recovered biological archive reconstruction</p>
+        </header>
+
+
+        <!-- LEFT SIDE -->
+        <div class="layout">
+
+            <div class="panel">
+                <h2>Recovered Fragments</h2>
+
+                <div class="fragmentBox">
+                    <div class="fragment">ATG CCT GAA TAC GGT</div>
+                    <div class="fragment">GGA TTA CCG AAC TGA</div>
+                    <div class="fragment">TTC AGG CCA GAT TAA</div>
+                    <div class="fragment">AAC TGC TTT GGA CCG</div>
+                    <div class="fragment">GCT TAC AAG CCA TGA</div>
+                    <div class="fragment">TGA GGC ATT CCG AAC</div>
+                </div>
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+            <div class="panel">
+                <h2>Terminal Input</h2>
+
+                <textarea id="terminalInput" placeholder="Enter reconstructed sequence..."></textarea>
+
+                <button id="submitBtn">VALIDATE SEQUENCE</button>
+
+                <div id="responseBox">
+                    Awaiting sequence input...
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- SECRET FILE -->
+        <section id="secretSection" class="hidden">
+            <h2>ARCHIVE RECOVERED</h2>
+
+            <div class="archiveBox">
+                <p>
+                    Subject reconstruction complete.
+                </p>
+
+                <p>
+                    Genome integrity: 98.2%
+                </p>
+
+                <p>
+                    Neural imprint recovered.
+                </p>
+
+                <p>
+                    WARNING: Biological drift detected.
+                </p>
+
+                <button id="downloadBtn">OPEN FINAL FILE</button>
+            </div>
+        </section>
+
+    </section>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
+
