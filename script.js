@@ -67,21 +67,21 @@ function animatePhageAttack(){
 
     setTimeout(() => {
 
-        viralRNA.style.opacity = "1";
+    viralRNA.style.opacity = "1";
 
-        viralRNA.animate([
-            {
-                width:"0px"
-            },
-            {
-                width:"220px"
-            }
-        ], {
-            duration:1400,
-            fill:"forwards"
-        });
+    viralRNA.animate([
+        {
+            transform:"translateY(-50%) scaleX(0)"
+        },
+        {
+            transform:"translateY(-50%) scaleX(1)"
+        }
+    ], {
+        duration:1800,
+        fill:"forwards"
+    });
 
-    }, 2700);
+}, 4300);
 }
 
 /* =========================
