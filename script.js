@@ -91,6 +91,7 @@ function animatePhageAttack(){
     ecoli.classList.add("injected");
 
 }, 3300);
+}
 
 /* =========================
    MAIN SIMULATION
