@@ -208,13 +208,3 @@ runBtn.addEventListener("click", () => {
     }, 4300);
 
 });
-
-/* =========================
-   FINAL FILE
-========================= */
-
-openArchiveBtn.addEventListener("click", () => {
-
-    window.location.href = "finalfile.html";
-
-});
