@@ -322,12 +322,11 @@ body::after{
 #phage{
     position:absolute;
 
-    width:90px;
-    height:120px;
+    width:45px;
+    height:60px;
 
     left:-160px;
-
-    top:25%;
+    top:22%;
 
     transform:translateY(-50%);
 
@@ -482,6 +481,12 @@ body::after{
     background:white;
 }
 
+.capsidGlass,
+.tailSheath,
+.tailNeedle,
+.fiber{
+    transition: transform 1.2s ease, opacity 1.2s ease;
+}
 
 .leg{
     position:absolute;
