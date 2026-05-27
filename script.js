@@ -53,36 +53,44 @@ function resetSimulation(){
 function animatePhageAttack(){
 
     phage.animate([
-        {
-            left:"-220px"
-        },
-        {
-            left:"22%"
-        }
-    ], {
-        duration:2600,
-        fill:"forwards"
-    });
+    {
+        left:"-180px",
+        top:"32%"
+    },
+    {
+        left:"43%",
+        top:"30%"
+    }
+], {
+    duration:3200,
+    fill:"forwards",
+    easing:"ease-in-out"
+});
 
 
     setTimeout(() => {
 
-    viralRNA.style.opacity = "1";
+    /* EXTEND NEEDLE */
 
-    viralRNA.animate([
+    document.querySelector(".tailNeedle")
+    .animate([
         {
-            transform:"translateY(-50%) scaleX(0)"
+            height:"50px"
         },
         {
-            transform:"translateY(-50%) scaleX(1)"
+            height:"110px"
         }
     ], {
-        duration:1800,
-        fill:"forwards"
+        duration:700,
+        fill:"forwards",
+        easing:"ease-out"
     });
 
-}, 4300);
-}
+    /* CELL STUTTER */
+
+    ecoli.classList.add("injected");
+
+}, 3300);
 
 /* =========================
    MAIN SIMULATION
