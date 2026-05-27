@@ -2,15 +2,23 @@ const continueBtn = document.getElementById("continueBtn");
 const bootScreen = document.getElementById("bootScreen");
 const terminalSection = document.getElementById("terminalSection");
 
-const submitBtn = document.getElementById("submitBtn");
-const terminalInput = document.getElementById("terminalInput");
-const responseBox = document.getElementById("responseBox");
-const secretSection = document.getElementById("secretSection");
+const metabolism = document.getElementById("metabolism");
+const atpLevel = document.getElementById("atpLevel");
+const ribosomeState = document.getElementById("ribosomeState");
+const repairPathway = document.getElementById("repairPathway");
 
-const downloadBtn = document.getElementById("downloadBtn");
+const phage = document.getElementById("phage");
+const ecoli = document.getElementById("ecoli");
+const viralRNA = document.getElementById("viralRNA");
+
+const simulationLog = document.getElementById("simulationLog");
+const runBtn = document.getElementById("runBtn");
+
+const secretSection = document.getElementById("secretSection");
+const openArchiveBtn = document.getElementById("openArchiveBtn");
 
 /* =========================
-   BOOT SEQUENCE
+   BOOT
 ========================= */
 
 continueBtn.addEventListener("click", () => {
@@ -21,161 +29,192 @@ continueBtn.addEventListener("click", () => {
 });
 
 /* =========================
-   PHASE 3 VALIDATION
+   RESET
 ========================= */
 
-const correctSequence = "OMEGA-13";
+function resetSimulation(){
 
-submitBtn.addEventListener("click", () => {
+    ecoli.classList.remove(
+        "successState",
+        "failureState",
+        "lysisState"
+    );
 
-    const value = terminalInput.value
-    .trim()
-    .toUpperCase();
+    viralRNA.style.opacity = "0";
+    viralRNA.style.width = "0px";
+
+    phage.style.left = "-220px";
+}
+
+/* =========================
+   PHAGE ATTACK
+========================= */
+
+function animatePhageAttack(){
+
+    phage.animate([
+        {
+            left:"-220px"
+        },
+        {
+            left:"22%"
+        }
+    ], {
+        duration:2600,
+        fill:"forwards"
+    });
 
 
-    if(value === correctSequence){
+    setTimeout(() => {
 
-        responseBox.innerHTML = `
-        ACCESS GRANTED<br><br>
-        Sequence integrity confirmed.<br>
-        Unlocking archive...
-        `;
+        viralRNA.style.opacity = "1";
 
-        secretSection.classList.remove("hidden");
+        viralRNA.animate([
+            {
+                width:"0px"
+            },
+            {
+                width:"220px"
+            }
+        ], {
+            duration:1400,
+            fill:"forwards"
+        });
 
+    }, 2700);
+}
+
+/* =========================
+   MAIN SIMULATION
+========================= */
+
+runBtn.addEventListener("click", () => {
+
+    resetSimulation();
+
+    const m = metabolism.value;
+    const a = atpLevel.value;
+    const r = ribosomeState.value;
+    const d = repairPathway.value;
+
+    secretSection.classList.add("hidden");
+
+    animatePhageAttack();
+
+
+    /* SUCCESS */
+
+    if(
+        m === "respiration" &&
+        a === "high" &&
+        r === "active" &&
+        d === "recombinational"
+    ){
+
+        setTimeout(() => {
+
+            ecoli.classList.add("successState");
+
+            simulationLog.innerHTML = `
+            STABLE INTEGRATION ACHIEVED<br><br>
+            Viral RNA successfully integrated into bacterial nucleoid.<br>
+            ATP reserves sufficient for phage replication.<br>
+            Recombinant strain stabilized.
+            `;
+
+            setTimeout(() => {
+                secretSection.classList.remove("hidden");
+            }, 2500);
+
+        }, 4300);
+
+        return;
     }
 
-    else{
 
-        responseBox.innerHTML = `
-        ERROR: INVALID SEQUENCE<br><br>
-        Reconstruction mismatch detected.
-        `;
+    /* LYSIS */
+
+    if(
+        a === "high" &&
+        r === "active"
+    ){
+
+        setTimeout(() => {
+
+            ecoli.classList.add("lysisState");
+
+            simulationLog.innerHTML = `
+            LYTIC CASCADE INITIATED<br><br>
+            Uncontrolled phage replication detected.<br>
+            Cell membrane rupture imminent.
+            `;
+
+        }, 4300);
+
+        return;
     }
+
+
+    /* LOW ATP */
+
+    if(a === "low"){
+
+        setTimeout(() => {
+
+            ecoli.classList.add("failureState");
+
+            simulationLog.innerHTML = `
+            DORMANT INFECTION DETECTED<br><br>
+            ATP depletion prevents replication.
+            Viral genome remains inactive.
+            `;
+
+        }, 4300);
+
+        return;
+    }
+
+
+    /* DNA DAMAGE */
+
+    if(d === "errorprone"){
+
+        setTimeout(() => {
+
+            ecoli.classList.add("failureState");
+
+            simulationLog.innerHTML = `
+            GENOMIC INSTABILITY DETECTED<br><br>
+            Error-prone DNA repair introduced lethal mutations.
+            `;
+
+        }, 4300);
+
+        return;
+    }
+
+
+    /* DEFAULT FAILURE */
+
+    setTimeout(() => {
+
+        ecoli.classList.add("failureState");
+
+        simulationLog.innerHTML = `
+        INFECTION FAILED<br><br>
+        Host-cell environment incompatible with phage integration.
+        `;
+
+    }, 4300);
+
 });
 
 /* =========================
    FINAL FILE
 ========================= */
 
-downloadBtn.addEventListener("click", () => {
+openArchiveBtn.addEventListener("click", () => {
 
     window.location.href = "finalfile.html";
 
-});
-
-/* =========================
-   INFECTION ANIMATION
-========================= */
-
-const virus = document.getElementById("virus");
-const rna = document.getElementById("rna");
-const cell = document.getElementById("cell");
-
-function startInfection(){
-
-    /* VIRUS MOVES TO CELL */
-
-    virus.animate([
-        {
-            left:"-120px"
-        },
-        {
-            left:"42%"
-        }
-    ], {
-        duration:3000,
-        fill:"forwards"
-    });
-
-
-    /* RNA INJECTION */
-
-    setTimeout(() => {
-
-        rna.style.opacity = "1";
-
-        rna.animate([
-            {
-                width:"0px"
-            },
-            {
-                width:"140px"
-            }
-        ], {
-            duration:1500,
-            fill:"forwards"
-        });
-
-        cell.classList.add("infected");
-
-    }, 3000);
-
-
-    /* DNA INTEGRATION */
-
-    setTimeout(() => {
-
-        cell.classList.add("integrated");
-
-    }, 5000);
-}
-
-/* =========================
-   CELL LYSIS
-========================= */
-
-function triggerLysis(){
-
-    cell.classList.add("lysis");
-
-    setTimeout(() => {
-
-        alert("CELL MEMBRANE FAILURE DETECTED");
-
-    }, 900);
-}
-
-/* =========================
-   SECRET COMBINATIONS
-========================= */
-
-submitBtn.addEventListener("click", () => {
-
-    const value = terminalInput.value
-    .trim()
-    .toUpperCase();
-
-
-    /* BAD ENDING */
-
-    if(value === "LYSIS-7"){
-
-        responseBox.innerHTML = `
-        MUTATION PATHWAY DETECTED<br><br>
-        CELLULAR COLLAPSE INITIATED
-        `;
-
-        triggerLysis();
-
-        return;
-    }
-
-
-    /* GOOD ENDING */
-
-    if(value === correctSequence){
-
-        responseBox.innerHTML = `
-        ACCESS GRANTED<br><br>
-        Viral integration stabilized.<br>
-        Unlocking archive...
-        `;
-
-        startInfection();
-
-        setTimeout(() => {
-            secretSection.classList.remove("hidden");
-        }, 6500);
-    }
 });
