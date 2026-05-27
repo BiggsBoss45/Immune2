@@ -127,13 +127,25 @@ header h1{
 
 #cameraLayer{
     position:absolute;
+
     inset:0;
 
-    z-index:2;
+    z-index:1;
 
     transform-origin:center center;
+
+    will-change:transform;
+
+    backface-visibility:hidden;
+
+    overflow:hidden;
+
+    transition:transform 1.2s ease-in-out;
 }
 
+.zoomedIn{
+    transform:scale(1.8) translateX(40px);
+}
 /* ACTUAL ANIMATION */
 
 #ecoli,
@@ -310,18 +322,17 @@ body::after{
 #phage{
     position:absolute;
 
-    width:140px;
-    height:190px;
+    width:90px;
+    height:120px;
 
-    left:-180px;
+    left:-160px;
 
-    top:38%;
+    top:25%;
 
     transform:translateY(-50%);
 
     z-index:5;
 }
-
 /* =========================
    PHAGE CAPSID
 ========================= */
