@@ -260,20 +260,37 @@ header h1{
 
 .capsidGlass{
     position:relative;
-    width:140px;
-    height:140px;
+
+    width:150px;
+    height:150px;
+
     margin:auto;
-    background:rgba(255,255,255,.08);
-    border:4px solid white;
+
+    /* STRONGER GLASS EFFECT */
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,.22),
+        rgba(255,255,255,.04)
+    );
+
+    border:4px solid rgba(255,255,255,.95);
+
     clip-path:polygon(
         50% 0%,
-        92% 22%,
-        100% 70%,
+        90% 18%,
+        100% 68%,
         72% 100%,
         28% 100%,
-        0% 70%,
-        8% 22%
+        0% 68%,
+        10% 18%
     );
+
+    box-shadow:
+    inset 0 0 25px rgba(255,255,255,.12),
+    0 0 20px rgba(255,255,255,.2);
+
+    overflow:hidden;
 }
 
 .rnaHelix{
@@ -356,13 +373,72 @@ header h1{
 
 #viralRNA{
     position:absolute;
-    width:0px;
-    height:8px;
-    background:orange;
+
+    width:240px;
+    height:80px;
+
     top:50%;
-    left:41%;
+    left:36%;
+
+    transform:translateY(-50%);
+
     opacity:0;
-    box-shadow:0 0 15px orange;
+
+    overflow:hidden;
+}
+
+/* RNA STRANDS */
+
+#viralRNA::before,
+#viralRNA::after{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:34px;
+
+    border-radius:50%;
+
+    border:3px dashed white;
+}
+
+/* TOP STRAND */
+
+#viralRNA::before{
+    top:0;
+
+    animation:rnaFlow 1.2s linear infinite;
+}
+
+/* BOTTOM STRAND */
+
+#viralRNA::after{
+    bottom:0;
+
+    animation:rnaFlowReverse 1.2s linear infinite;
+}
+
+@keyframes rnaFlow{
+
+    from{
+        transform:translateX(-10px);
+    }
+
+    to{
+        transform:translateX(10px);
+    }
+}
+
+@keyframes rnaFlowReverse{
+
+    from{
+        transform:translateX(10px);
+    }
+
+    to{
+        transform:translateX(-10px);
+    }
 }
 
 /* CONTROLS */
