@@ -298,6 +298,63 @@ body::after{
     box-shadow:0 0 10px yellow;
     animation:floatATP 3s infinite alternate ease-in-out;
 }
+#mitochondrion{
+    position:absolute;
+
+    width:0px;
+    height:0px;
+
+    border-radius:50%;
+
+    left:50%;
+    top:55%;
+
+    transform:translate(-50%, -50%);
+
+    background:
+        radial-gradient(circle at 30% 30%, white, #aaa, #333);
+
+    box-shadow:0 0 20px rgba(255,255,255,.4);
+
+    opacity:0;
+}
+
+.mitochondriaFormed{
+    animation:mitoGrow 2.5s forwards ease-out;
+}
+
+@keyframes mitoGrow{
+
+    0%{
+        width:0px;
+        height:0px;
+        opacity:0;
+        transform:translate(-50%, -50%) scale(0.2);
+    }
+
+    60%{
+        opacity:1;
+    }
+
+    100%{
+        width:90px;
+        height:40px;
+        opacity:1;
+        transform:translate(-50%, -50%) scale(1);
+    }
+}
+
+#mitochondrion.mitochondriaFormed{
+    animation:
+        mitoGrow 2.5s forwards ease-out,
+        mitoPulse 2s infinite ease-in-out 2.5s;
+}
+
+@keyframes mitoPulse{
+    0%{ box-shadow:0 0 10px rgba(255,255,255,.2); }
+    50%{ box-shadow:0 0 35px rgba(255,255,255,.5); }
+    100%{ box-shadow:0 0 10px rgba(255,255,255,.2); }
+}
 
 @keyframes floatATP{
 
