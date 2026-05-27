@@ -678,61 +678,63 @@ body::after{
 
 /* MAIN SIMULATION CONTAINER */
 
+/* =========================
+   SIMULATION CONTAINER
+========================= */
+
 .simulationArea{
     position:relative;
     overflow:hidden;
-
     z-index:1;
+    clip-path:inset(0);
 }
 
-/* CAMERA CONTENT */
+/* CAMERA */
 
 #cameraLayer{
     position:absolute;
-
     inset:0;
-
-    z-index:1;
-
+    z-index:2;
     transform-origin:center center;
-
     will-change:transform;
-
-    backface-visibility:hidden;
-
-    overflow:hidden;
 }
 
-/* E.COLI + PHAGE */
+/* ENTITIES */
 
 #ecoli,
 #phage,
 #viralRNA{
     position:absolute;
-
     z-index:3;
 }
 
-/* UI CONTROLS */
+/* =========================
+   UI (SAFE LAYERING)
+========================= */
+
+.uiPanel{
+    position:relative;
+    z-index:50;
+    background:black;
+    padding-top:25px;
+}
 
 .bioControls,
 .controls,
 #simulationLog{
     position:relative;
-
-    z-index:20;
+    z-index:60;
 }
-
-/* BUTTONS */
 
 button,
 select{
     position:relative;
-
-    z-index:25;
+    z-index:70;
 }
 
-/* MICROSCOPE OVERLAY */
+/* =========================
+   OVERLAYS (HIGHEST VISUAL)
+========================= */
 
 body::before,
 body::after{
@@ -740,21 +742,5 @@ body::after{
     pointer-events:none;
 }
 
-/* FORCE EVERYTHING IN SIMULATION BELOW UI */
-
-.simulationArea *{
-    max-z-index:10;
-}
-
-/* UI ALWAYS ABOVE */
-
-.uiPanel,
-.bioControls,
-.controls,
-#simulationLog,
-button,
-select{
-    position:relative;
-
-    z-index:9999 !important;
-}
+/* REMOVE THIS (INVALID CSS) */
+/* .simulationArea * { max-z-index:10; } */
