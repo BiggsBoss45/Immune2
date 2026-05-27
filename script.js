@@ -1,27 +1,40 @@
 console.log("BOOT SCRIPT LOADED");
 
 /* =========================
-   DOM ELEMENTS
+   BOOT SYSTEM
 ========================= */
 
-const continueBtn = document.getElementById("continueBtn");
-const bootScreen = document.getElementById("bootScreen");
-const terminalSection = document.getElementById("terminalSection");
+window.addEventListener("DOMContentLoaded", () => {
 
-const metabolism = document.getElementById("metabolism");
-const atpLevel = document.getElementById("atpLevel");
-const ribosomeState = document.getElementById("ribosomeState");
-const repairPathway = document.getElementById("repairPathway");
+    console.log("DOM READY");
 
-const phage = document.getElementById("phage");
-const ecoli = document.getElementById("ecoli");
-const viralRNA = document.getElementById("viralRNA");
+    const continueBtn = document.getElementById("continueBtn");
+    const bootScreen = document.getElementById("bootScreen");
+    const terminalSection = document.getElementById("terminalSection");
 
-const simulationLog = document.getElementById("simulationLog");
-const runBtn = document.getElementById("runBtn");
+    if (!continueBtn || !bootScreen || !terminalSection) {
+        console.error("BOOT ELEMENT MISSING");
+        return;
+    }
 
-const secretSection = document.getElementById("secretSection");
-const openArchiveBtn = document.getElementById("openArchiveBtn");
+    continueBtn.addEventListener("click", () => {
+        console.log("ENTER TERMINAL CLICKED");
+
+        bootScreen.style.display = "none";
+        terminalSection.classList.remove("hidden");
+    });
+
+    initSimulation();
+});
+
+/* =========================
+   ELEMENTS (SIMULATION)
+========================= */
+
+let metabolism, atpLevel, ribosomeState, repairPathway;
+let phage, ecoli, viralRNA;
+let simulationLog, runBtn;
+let secretSection, openArchiveBtn;
 
 let infectionData = {
     injected: false,
@@ -29,17 +42,30 @@ let infectionData = {
 };
 
 /* =========================
-   BOOT
+   INIT SIMULATION
 ========================= */
 
-window.addEventListener("DOMContentLoaded", () => {
+function initSimulation() {
 
-    continueBtn.addEventListener("click", () => {
-        bootScreen.style.display = "none";
-        terminalSection.classList.remove("hidden");
-    });
+    metabolism = document.getElementById("metabolism");
+    atpLevel = document.getElementById("atpLevel");
+    ribosomeState = document.getElementById("ribosomeState");
+    repairPathway = document.getElementById("repairPathway");
 
-});
+    phage = document.getElementById("phage");
+    ecoli = document.getElementById("ecoli");
+    viralRNA = document.getElementById("viralRNA");
+
+    simulationLog = document.getElementById("simulationLog");
+    runBtn = document.getElementById("runBtn");
+
+    secretSection = document.getElementById("secretSection");
+    openArchiveBtn = document.getElementById("openArchiveBtn");
+
+    if (runBtn) {
+        runBtn.addEventListener("click", runSimulation);
+    }
+}
 
 /* =========================
    RESET
@@ -55,6 +81,9 @@ function resetSimulation() {
     viralRNA.style.width = "0px";
 
     phage.style.left = "-220px";
+
+    infectionData.injected = false;
+    infectionData.rnaInsideCell = false;
 }
 
 /* =========================
@@ -101,20 +130,23 @@ function animatePhageAttack() {
 
             infectionData.rnaInsideCell = true;
 
-            viralRNA.style.opacity = "1";
-            viralRNA.style.width = "140px";
+            if (viralRNA) {
+                viralRNA.style.opacity = "1";
+                viralRNA.style.width = "140px";
+            }
 
-            simulationLog.innerHTML += `
-            <br><br>RNA TRANSFER COMPLETE:<br>
-            Viral genome successfully injected into host cytoplasm.
-            `;
+            if (simulationLog) {
+                simulationLog.innerHTML += `
+                <br><br>RNA TRANSFER COMPLETE:<br>
+                Viral genome successfully injected into host cytoplasm.
+                `;
+            }
 
             /* DISASSEMBLY */
             setTimeout(() => {
 
                 const capsid = document.querySelector(".capsidGlass");
                 const tail = document.querySelector(".tailSheath");
-                const needle = document.querySelector(".tailNeedle");
 
                 if (capsid) {
                     capsid.style.transform = "translateY(-40px) scale(0.7)";
@@ -145,10 +177,10 @@ function animatePhageAttack() {
 }
 
 /* =========================
-   MAIN SIMULATION
+   RUN SIMULATION
 ========================= */
 
-runBtn.addEventListener("click", () => {
+function runSimulation() {
 
     resetSimulation();
 
@@ -157,10 +189,13 @@ runBtn.addEventListener("click", () => {
     const r = ribosomeState?.value;
     const d = repairPathway?.value;
 
-    secretSection?.classList.add("hidden");
+    if (secretSection) {
+        secretSection.classList.add("hidden");
+    }
 
     animatePhageAttack();
 
+    /* SUCCESS */
     if (
         m === "respiration" &&
         a === "high" &&
@@ -170,18 +205,22 @@ runBtn.addEventListener("click", () => {
 
         setTimeout(() => {
 
-            ecoli?.classList.add("successState");
+            if (ecoli) ecoli.classList.add("successState");
 
             const mito = document.getElementById("mitochondrion");
             if (mito) mito.classList.add("mitochondriaFormed");
 
-            simulationLog.innerHTML = `
-            STABLE INTEGRATION ACHIEVED<br><br>
-            SYMBIOTIC SHIFT DETECTED: Mitochondrion formation initiated.
-            `;
+            if (simulationLog) {
+                simulationLog.innerHTML = `
+                STABLE INTEGRATION ACHIEVED<br><br>
+                SYMBIOTIC SHIFT DETECTED
+                `;
+            }
 
             setTimeout(() => {
-                secretSection?.classList.remove("hidden");
+                if (secretSection) {
+                    secretSection.classList.remove("hidden");
+                }
             }, 2500);
 
         }, 4300);
@@ -189,28 +228,32 @@ runBtn.addEventListener("click", () => {
         return;
     }
 
+    /* LYSIS */
     if (a === "high" && r === "active") {
         setTimeout(() => {
-            ecoli?.classList.add("lysisState");
+            if (ecoli) ecoli.classList.add("lysisState");
         }, 4300);
         return;
     }
 
+    /* LOW ATP */
     if (a === "low") {
         setTimeout(() => {
-            ecoli?.classList.add("failureState");
+            if (ecoli) ecoli.classList.add("failureState");
         }, 4300);
         return;
     }
 
+    /* DNA DAMAGE */
     if (d === "errorprone") {
         setTimeout(() => {
-            ecoli?.classList.add("failureState");
+            if (ecoli) ecoli.classList.add("failureState");
         }, 4300);
         return;
     }
 
+    /* DEFAULT */
     setTimeout(() => {
-        ecoli?.classList.add("failureState");
+        if (ecoli) ecoli.classList.add("failureState");
     }, 4300);
-});
+}
