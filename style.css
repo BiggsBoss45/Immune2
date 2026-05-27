@@ -106,14 +106,22 @@ header h1{
 
 .simulationArea{
     position:relative;
+
     width:100%;
     height:650px;
-    border:2px solid #00ff88;
+
+    background:black;
+
     overflow:hidden;
-    background:
-    radial-gradient(circle at center,
-    rgba(0,255,136,.08),
-    black 70%);
+
+    /* CRITICAL */
+    isolation:isolate;
+
+    /* HARD CLIP */
+    clip-path:inset(0);
+
+    /* NEW STACKING CONTEXT */
+    z-index:0;
 }
 
 .simulationArea{
@@ -624,9 +632,18 @@ header h1{
 
 #cameraLayer{
     position:absolute;
+
     inset:0;
 
-    z-index:2;
+    z-index:1;
+
+    transform-origin:center center;
+
+    will-change:transform;
+
+    backface-visibility:hidden;
+
+    overflow:hidden;
 }
 
 /* E.COLI + PHAGE */
@@ -664,4 +681,23 @@ body::before,
 body::after{
     z-index:100;
     pointer-events:none;
+}
+
+/* FORCE EVERYTHING IN SIMULATION BELOW UI */
+
+.simulationArea *{
+    max-z-index:10;
+}
+
+/* UI ALWAYS ABOVE */
+
+.uiPanel,
+.bioControls,
+.controls,
+#simulationLog,
+button,
+select{
+    position:relative;
+
+    z-index:9999 !important;
 }
