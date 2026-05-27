@@ -51,131 +51,145 @@
 
         <!-- SIMULATION -->
 
-        <section id="infectionLab">
+       <section id="infectionLab">
 
-            <h2>E. COLI INFECTION MODEL</h2>
+    <h2>E. COLI INFECTION MODEL</h2>
 
-            <div class="simulationArea">
+    <!-- =========================
+         SIMULATION VIEWPORT
+    ========================== -->
 
-                <!-- E COLI -->
+    <div class="simulationArea">
 
-                <div id="ecoli">
+        <div id="cameraLayer">
 
-                    <div id="membrane"></div>
+            <!-- =========================
+                 E.COLI
+            ========================== -->
 
-                    <div id="nucleoid"></div>
+            <div id="ecoli">
 
-                    <!-- PLASMIDS -->
+                <div id="membrane"></div>
 
-                    <div class="plasmid plasmid1"></div>
-                    <div class="plasmid plasmid2"></div>
+                <div id="nucleoid"></div>
 
-                    <!-- RIBOSOMES -->
+                <!-- PLASMIDS -->
 
-                    <div class="ribosome r1"></div>
-                    <div class="ribosome r2"></div>
-                    <div class="ribosome r3"></div>
-                    <div class="ribosome r4"></div>
-                    <div class="ribosome r5"></div>
-                    <div class="ribosome r6"></div>
-                    <div class="ribosome r7"></div>
-                    <div class="ribosome r8"></div>
+                <div class="plasmid plasmid1"></div>
+                <div class="plasmid plasmid2"></div>
 
-                    <!-- ATP PARTICLES -->
+                <!-- RIBOSOMES -->
 
-                    <div class="atp a1"></div>
-                    <div class="atp a2"></div>
-                    <div class="atp a3"></div>
-                    <div class="atp a4"></div>
-                    <div class="atp a5"></div>
-                    <div class="atp a6"></div>
+                <div class="ribosome r1"></div>
+                <div class="ribosome r2"></div>
+                <div class="ribosome r3"></div>
+                <div class="ribosome r4"></div>
+                <div class="ribosome r5"></div>
+                <div class="ribosome r6"></div>
+                <div class="ribosome r7"></div>
+                <div class="ribosome r8"></div>
+
+                <!-- ATP -->
+
+                <div class="atp a1"></div>
+                <div class="atp a2"></div>
+                <div class="atp a3"></div>
+                <div class="atp a4"></div>
+                <div class="atp a5"></div>
+                <div class="atp a6"></div>
+
+            </div>
+
+            <!-- =========================
+                 PHAGE
+            ========================== -->
+
+            <div id="phage">
+
+                <div class="capsidGlass">
+
+                    <div class="rnaHelix helix1"></div>
+                    <div class="rnaHelix helix2"></div>
+                    <div class="rnaCore"></div>
 
                 </div>
 
+                <div class="tailSheath"></div>
 
-                <!-- BACTERIOPHAGE -->
+                <div class="tailNeedle"></div>
 
-                <div id="phage">
-
-                    <div class="capsid"></div>
-                    <div class="tail"></div>
-                    <div class="tailTube"></div>
-
-                    <div id="phage">
-
-    <div class="capsidGlass">
-
-        <div class="rnaHelix helix1"></div>
-        <div class="rnaHelix helix2"></div>
-        <div class="rnaCore"></div>
-
-     <div class="tailSheath"></div>
-    <div class="tailNeedle"></div>
-
-    <div class="fiber fiber1"></div>
-    <div class="fiber fiber2"></div>
-    <div class="fiber fiber3"></div>
-    <div class="fiber fiber4"></div>
-    <div class="fiber fiber5"></div>
-    <div class="fiber fiber6"></div>
-
-</div>
-                </div>
-
-
-                <!-- VIRAL RNA -->
-
-                <div id="viralRNA"></div>
+                <div class="fiber fiber1"></div>
+                <div class="fiber fiber2"></div>
+                <div class="fiber fiber3"></div>
+                <div class="fiber fiber4"></div>
+                <div class="fiber fiber5"></div>
+                <div class="fiber fiber6"></div>
 
             </div>
 
+            <!-- =========================
+                 VIRAL RNA
+            ========================== -->
 
-            <!-- CONTROLS -->
+            <div id="viralRNA"></div>
 
-            <div class="bioControls">
+        </div>
 
-                <select id="metabolism">
-                    <option value="">Metabolic Pathway</option>
-                    <option value="glycolysis">Glycolysis</option>
-                    <option value="fermentation">Fermentation</option>
-                    <option value="respiration">Aerobic Respiration</option>
-                </select>
+    </div>
 
-                <select id="atpLevel">
-                    <option value="">ATP Level</option>
-                    <option value="low">Low ATP</option>
-                    <option value="medium">Medium ATP</option>
-                    <option value="high">High ATP</option>
-                </select>
+    <!-- =========================
+         UI PANEL
+    ========================== -->
 
-                <select id="ribosomeState">
-                    <option value="">Ribosome State</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="stressed">Stressed</option>
-                    <option value="active">Active</option>
-                </select>
+    <div class="uiPanel">
 
-                <select id="repairPathway">
-                    <option value="">DNA Repair Pathway</option>
-                    <option value="errorprone">Error-Prone Repair</option>
-                    <option value="recombinational">Recombinational Repair</option>
-                    <option value="none">Disabled</option>
-                </select>
+        <div class="bioControls">
 
-            </div>
+            <select id="metabolism">
+                <option value="">Metabolic Pathway</option>
+                <option value="glycolysis">Glycolysis</option>
+                <option value="fermentation">Fermentation</option>
+                <option value="respiration">Aerobic Respiration</option>
+            </select>
 
+            <select id="atpLevel">
+                <option value="">ATP Level</option>
+                <option value="low">Low ATP</option>
+                <option value="medium">Medium ATP</option>
+                <option value="high">High ATP</option>
+            </select>
 
-            <div class="controls">
-                <button id="runBtn">RUN SIMULATION</button>
-            </div>
+            <select id="ribosomeState">
+                <option value="">Ribosome State</option>
+                <option value="inactive">Inactive</option>
+                <option value="stressed">Stressed</option>
+                <option value="active">Active</option>
+            </select>
 
+            <select id="repairPathway">
+                <option value="">DNA Repair Pathway</option>
+                <option value="errorprone">Error-Prone Repair</option>
+                <option value="recombinational">Recombinational Repair</option>
+                <option value="none">Disabled</option>
+            </select>
 
-            <div id="simulationLog">
-                Awaiting biological configuration...
-            </div>
+        </div>
 
-        </section>
+        <div class="controls">
 
+            <button id="runBtn">
+                RUN SIMULATION
+            </button>
+
+        </div>
+
+        <div id="simulationLog">
+            Awaiting biological configuration...
+        </div>
+
+    </div>
+
+</section>
 
         <!-- SECRET FILE -->
 
