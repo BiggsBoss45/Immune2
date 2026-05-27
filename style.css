@@ -309,11 +309,17 @@ body::after{
 
 #phage{
     position:absolute;
-    width:260px;
-    height:320px;
-    left:-300px;
-    top:50%;
+
+    width:140px;
+    height:190px;
+
+    left:-180px;
+
+    top:38%;
+
     transform:translateY(-50%);
+
+    z-index:5;
 }
 
 /* =========================
@@ -446,10 +452,16 @@ body::after{
 }
 
 .tailNeedle{
-    width:6px;
-    height:90px;
+    position:relative;
+
+    width:4px;
+    height:50px;
+
     margin:auto;
+
     background:white;
+
+    transform-origin:top center;
 }
 
 .fiber{
@@ -479,17 +491,15 @@ body::after{
 #viralRNA{
     position:absolute;
 
-    width:240px;
-    height:80px;
+    width:180px;
+    height:60px;
 
-    top:50%;
-    left:36%;
-
-    transform:translateY(-50%);
+    left:47%;
+    top:34%;
 
     opacity:0;
 
-    overflow:hidden;
+    transform-origin:left center;
 }
 
 /* RNA STRANDS */
