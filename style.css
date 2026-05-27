@@ -822,3 +822,17 @@ body::after{
 }
 /* REMOVE THIS (INVALID CSS) */
 /* .simulationArea * { max-z-index:10; } */
+
+#bootScreen {
+    z-index: 100000;
+    position: fixed;
+}
+
+/* only block overlay interference, not UI controls */
+.scanlines {
+    z-index: 50;
+}
+
+.uiPanel {
+    z-index: 9999;
+}
