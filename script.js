@@ -62,25 +62,17 @@ window.addEventListener("DOMContentLoaded", () => {
         terminalSection.classList.remove("hidden");
 
         initSimulation();
-    });
-});
 
-       /* BUTTON CLICK AUDIO */
-
-document.querySelectorAll("button").forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        clickSound.currentTime = 0;
-
-        clickSound.play();
+        /* BUTTON CLICK AUDIO (MOVE INSIDE CLICK) */
+        document.querySelectorAll("button").forEach(button => {
+            button.addEventListener("click", () => {
+                clickSound.currentTime = 0;
+                clickSound.play();
+            });
+        });
 
     });
-
 });
-    });
-});
-
 /* =========================
    INIT SIMULATION
 ========================= */
