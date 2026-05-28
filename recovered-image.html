@@ -196,33 +196,41 @@ const statusText = document.getElementById("statusText");
 const container = document.getElementById("imageContainer");
 const backBtn = document.getElementById("backBtn");
 
-/* ✅ ALWAYS WORKS */
+/* BACK BUTTON ALWAYS WORKS */
 backBtn.addEventListener("click", () => {
     window.location.href = "index.html"; 
-    // change this to your real simulator file name
 });
 
-function lockScreen() {
+/* ❌ HARD STOP HERE */
+if (!solved) {
     statusText.innerHTML = "ACCESS DENIED // IMAGE DATA CORRUPTED";
+
     container.style.display = "none";
+    scanBar.style.display = "none";
+    image.style.display = "none";
+
+    backBtn.style.display = "block";
+
+    throw new Error("Locked: reconstruction aborted");
 }
 
-function runReconstruction() {
+/* =========================
+   ONLY RUN IF SOLVED
+========================= */
 
-    setTimeout(() => {
-        scanBar.classList.add("active");
-        container.classList.add("glitchFlash");
-    }, 600);
+setTimeout(() => {
+    scanBar.classList.add("active");
+    container.classList.add("glitchFlash");
+}, 600);
 
-    setTimeout(() => {
-        image.classList.add("visible");
-        statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
-    }, 3200);
+setTimeout(() => {
+    image.classList.add("visible");
+    statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
+}, 3200);
 
-    setTimeout(() => {
-        scanBar.style.opacity = "0";
-    }, 6500);
-}
+setTimeout(() => {
+    scanBar.style.opacity = "0";
+}, 6500);
 
 /* CONTROL FLOW */
 if (!solved) {
