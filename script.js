@@ -16,6 +16,31 @@ let infectionData = {
 };
 
 /* =========================
+   AUDIO SYSTEM
+========================= */
+
+const clickSound = new Audio("click.mp3");
+
+const injectSound = new Audio("inject.mp3");
+
+const lysisSound = new Audio("lysis.mp3");
+
+const failureSound = new Audio("failure.mp3");
+
+const mitoSound = new Audio("mitochondria.mp3");
+
+/* volume balancing */
+
+clickSound.volume = 0.35;
+
+injectSound.volume = 0.6;
+
+lysisSound.volume = 0.8;
+
+failureSound.volume = 0.45;
+
+mitoSound.volume = 0.7;
+/* =========================
    BOOT SYSTEM
 ========================= */
 
@@ -30,6 +55,20 @@ window.addEventListener("DOMContentLoaded", () => {
         terminalSection.classList.remove("hidden");
 
         initSimulation();
+
+       /* BUTTON CLICK AUDIO */
+
+document.querySelectorAll("button").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        clickSound.currentTime = 0;
+
+        clickSound.play();
+
+    });
+
+});
     });
 });
 
@@ -155,6 +194,8 @@ function animatePhageAttack() {
         setTimeout(() => {
 
             infectionData.rnaInsideCell = true;
+           injectSound.currentTime = 0;
+           injectSound.play();
 
             if (viralRNA) {
                 viralRNA.style.opacity = "1";
@@ -224,6 +265,8 @@ if (mito) {
     void mito.offsetWidth;
 
     mito.classList.add("mitochondriaFormed");
+   mitoSound.currentTime = 0;
+mitoSound.play();
 
     simulationLog.innerHTML += `
     <br><br>
@@ -251,21 +294,29 @@ if (mito) {
     /* LYSIS */
     if (a === "high" && r === "active") {
         setTimeout(() => ecoli?.classList.add("lysisState"), 4300);
+       lysisSound.currentTime = 0;
+      lysisSound.play();
         return;
     }
 
     /* LOW ATP */
     if (a === "low") {
         setTimeout(() => ecoli?.classList.add("failureState"), 4300);
+       failureSound.currentTime = 0;
+failureSound.play();
         return;
     }
 
     /* DNA DAMAGE */
     if (d === "errorprone") {
         setTimeout(() => ecoli?.classList.add("failureState"), 4300);
+       failureSound.currentTime = 0;
+failureSound.play();
         return;
     }
 
     /* DEFAULT FAILURE */
     setTimeout(() => ecoli?.classList.add("failureState"), 4300);
+   failureSound.currentTime = 0;
+failureSound.play();
 }
