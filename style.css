@@ -253,6 +253,17 @@ header h1 {
     opacity: 0;
 }
 
+#rnaParticle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 12px white;
+
+    opacity: 0;
+    z-index: 4;
+}
 /* =========================
    UI LAYER FIXES
 ========================= */
@@ -328,6 +339,15 @@ body::after {
         transform: translate(-50%, -50%) scale(2.3);
         opacity: 0;
     }
+
+   @keyframes rnaGlow {
+    0% { box-shadow: 0 0 5px white; }
+    50% { box-shadow: 0 0 18px white; }
+    100% { box-shadow: 0 0 5px white; }
+}
+
+#rnaParticle {
+    animation: rnaGlow 0.8s infinite;
 }
 
 /* =========================
