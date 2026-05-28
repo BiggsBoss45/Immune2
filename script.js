@@ -83,6 +83,35 @@ function resetSimulation() {
     });
 }
 
+function animateRNAInsideCell() {
+
+    const rna = document.getElementById("rnaParticle");
+    const cell = document.getElementById("ecoli");
+
+    if (!rna || !cell) return;
+
+    /* start at injection point */
+    rna.style.opacity = "1";
+    rna.style.left = "55%";
+    rna.style.top = "45%";
+
+    rna.animate([
+        { transform: "translate(0px, 0px) scale(1)" },
+        { transform: "translate(-40px, 20px) scale(1.2)" },
+        { transform: "translate(80px, -30px) scale(0.9)" },
+        { transform: "translate(20px, 60px) scale(1.1)" },
+        { transform: "translate(120px, 10px) scale(0.8)" }
+    ], {
+        duration: 2200,
+        easing: "ease-in-out",
+        fill: "forwards"
+    });
+
+    /* fade out at end (integration moment) */
+    setTimeout(() => {
+        rna.style.opacity = "0";
+    }, 2100);
+}
 /* =========================
    PHAGE ATTACK SEQUENCE
 ========================= */
@@ -120,6 +149,7 @@ function animatePhageAttack() {
         });
 
         infectionData.injected = true;
+       animateRNAInsideCell();
 
         /* RNA RELEASE */
         setTimeout(() => {
