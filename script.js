@@ -1,3 +1,4 @@
+alert("JS LOADED");
 console.log("BOOT SCRIPT LOADED");
 
 /* =========================
@@ -46,32 +47,14 @@ mitoSound.volume = 0.7;
 
 window.addEventListener("DOMContentLoaded", () => {
 
-    const continueBtn = document.getElementById("continueBtn");
-    const bootScreen = document.getElementById("bootScreen");
-    const terminalSection = document.getElementById("terminalSection");
+    const btn = document.getElementById("continueBtn");
 
-    console.log("BOOT INIT:", continueBtn, bootScreen, terminalSection);
+    console.log("BUTTON ELEMENT:", btn);
 
-    if (!continueBtn || !bootScreen || !terminalSection) return;
-
-    continueBtn.addEventListener("click", () => {
-
-        console.log("BUTTON CLICKED");
-
-        bootScreen.style.display = "none";
-        terminalSection.classList.remove("hidden");
-
-        initSimulation();
-
-        /* BUTTON CLICK AUDIO (MOVE INSIDE CLICK) */
-        document.querySelectorAll("button").forEach(button => {
-            button.addEventListener("click", () => {
-                clickSound.currentTime = 0;
-                clickSound.play();
-            });
-        });
-
+    btn?.addEventListener("click", () => {
+        alert("BUTTON WORKS");
     });
+
 });
 /* =========================
    INIT SIMULATION
