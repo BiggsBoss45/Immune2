@@ -22,19 +22,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
         bootScreen.style.display = "none";
         terminalSection.classList.remove("hidden");
-    });
 
-    initSimulation();
+        initSimulation(); // IMPORTANT: only init AFTER UI is visible
+    });
 });
 
 /* =========================
-   ELEMENTS (SIMULATION)
+   GLOBAL STATE
 ========================= */
 
 let metabolism, atpLevel, ribosomeState, repairPathway;
 let phage, ecoli, viralRNA;
 let simulationLog, runBtn;
-let secretSection, openArchiveBtn;
+let secretSection;
 
 let infectionData = {
     injected: false,
@@ -42,7 +42,7 @@ let infectionData = {
 };
 
 /* =========================
-   INIT SIMULATION
+   INIT
 ========================= */
 
 function initSimulation() {
@@ -60,11 +60,8 @@ function initSimulation() {
     runBtn = document.getElementById("runBtn");
 
     secretSection = document.getElementById("secretSection");
-    openArchiveBtn = document.getElementById("openArchiveBtn");
 
-    if (runBtn) {
-        runBtn.addEventListener("click", runSimulation);
-    }
+    runBtn?.addEventListener("click", runSimulation);
 }
 
 /* =========================
@@ -73,14 +70,16 @@ function initSimulation() {
 
 function resetSimulation() {
 
-    if (!ecoli || !viralRNA || !phage) return;
+    ecoli?.classList.remove("successState", "failureState", "lysisState");
 
-    ecoli.classList.remove("successState", "failureState", "lysisState");
+    if (viralRNA) {
+        viralRNA.style.opacity = "0";
+        viralRNA.style.width = "0px";
+    }
 
-    viralRNA.style.opacity = "0";
-    viralRNA.style.width = "0px";
-
-    phage.style.left = "-220px";
+    if (phage) {
+        phage.style.left = "-220px";
+    }
 
     infectionData.injected = false;
     infectionData.rnaInsideCell = false;
@@ -105,8 +104,7 @@ function animatePhageAttack() {
 
     /* ZOOM IN */
     setTimeout(() => {
-        const camera = document.getElementById("cameraLayer");
-        if (camera) camera.classList.add("zoomedIn");
+        document.getElementById("cameraLayer")?.classList.add("zoomedIn");
     }, 1200);
 
     /* INJECTION */
@@ -114,15 +112,13 @@ function animatePhageAttack() {
 
         const needle = document.querySelector(".tailNeedle");
 
-        if (needle) {
-            needle.animate([
-                { height: "50px" },
-                { height: "110px" }
-            ], {
-                duration: 700,
-                fill: "forwards"
-            });
-        }
+        needle?.animate([
+            { height: "50px" },
+            { height: "110px" }
+        ], {
+            duration: 700,
+            fill: "forwards"
+        });
 
         infectionData.injected = true;
 
@@ -142,34 +138,26 @@ function animatePhageAttack() {
                 `;
             }
 
-            /* DISASSEMBLY */
+            /* DISASSEMBLY (FIXED) */
             setTimeout(() => {
 
-    const capsid = document.querySelector(".capsidGlass");
-    const tail = document.querySelector(".tailSheath");
-    const needle = document.querySelector(".tailNeedle");
+                const capsid = document.querySelector(".capsidGlass");
+                const tail = document.querySelector(".tailSheath");
+                const needle = document.querySelector(".tailNeedle");
 
-    if (capsid) {
-        capsid.style.transform = "translateY(-40px) scale(0.6)";
-        capsid.style.opacity = "0";
-    }
+                capsid?.classList.add("fadeOut");
+                tail?.classList.add("fadeOut");
+                needle?.classList.add("fadeOut");
 
-    if (tail) {
-        tail.style.transform = "translateY(60px) rotate(20deg)";
-        tail.style.opacity = "0";
-    }
+            }, 900);
 
-    if (needle) {
-        needle.style.transform = "translateY(80px)";
-        needle.style.opacity = "0";
-    }
+        }, 600);
 
-}, 900);
+    }, 3300);
 
     /* ZOOM OUT */
     setTimeout(() => {
-        const camera = document.getElementById("cameraLayer");
-        if (camera) camera.classList.remove("zoomedIn");
+        document.getElementById("cameraLayer")?.classList.remove("zoomedIn");
     }, 5000);
 }
 
@@ -186,9 +174,7 @@ function runSimulation() {
     const r = ribosomeState?.value;
     const d = repairPathway?.value;
 
-    if (secretSection) {
-        secretSection.classList.add("hidden");
-    }
+    secretSection?.classList.add("hidden");
 
     animatePhageAttack();
 
@@ -199,25 +185,20 @@ function runSimulation() {
         r === "active" &&
         d === "recombinational"
     ) {
-
         setTimeout(() => {
 
-            if (ecoli) ecoli.classList.add("successState");
+            ecoli?.classList.add("successState");
 
             const mito = document.getElementById("mitochondrion");
-            if (mito) mito.classList.add("mitochondriaFormed");
+            mito?.classList.add("mitochondriaFormed");
 
-            if (simulationLog) {
-                simulationLog.innerHTML = `
-                STABLE INTEGRATION ACHIEVED<br><br>
-                SYMBIOTIC SHIFT DETECTED
-                `;
-            }
+            simulationLog.innerHTML = `
+            STABLE INTEGRATION ACHIEVED<br><br>
+            SYMBIOTIC SHIFT DETECTED
+            `;
 
             setTimeout(() => {
-                if (secretSection) {
-                    secretSection.classList.remove("hidden");
-                }
+                secretSection?.classList.remove("hidden");
             }, 2500);
 
         }, 4300);
@@ -227,30 +208,22 @@ function runSimulation() {
 
     /* LYSIS */
     if (a === "high" && r === "active") {
-        setTimeout(() => {
-            if (ecoli) ecoli.classList.add("lysisState");
-        }, 4300);
+        setTimeout(() => ecoli?.classList.add("lysisState"), 4300);
         return;
     }
 
     /* LOW ATP */
     if (a === "low") {
-        setTimeout(() => {
-            if (ecoli) ecoli.classList.add("failureState");
-        }, 4300);
+        setTimeout(() => ecoli?.classList.add("failureState"), 4300);
         return;
     }
 
     /* DNA DAMAGE */
     if (d === "errorprone") {
-        setTimeout(() => {
-            if (ecoli) ecoli.classList.add("failureState");
-        }, 4300);
+        setTimeout(() => ecoli?.classList.add("failureState"), 4300);
         return;
     }
 
     /* DEFAULT */
-    setTimeout(() => {
-        if (ecoli) ecoli.classList.add("failureState");
-    }, 4300);
+    setTimeout(() => ecoli?.classList.add("failureState"), 4300);
 }
