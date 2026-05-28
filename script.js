@@ -245,7 +245,7 @@ function runSimulation() {
 
     animatePhageAttack();
 
-    /* SUCCESS PATH */
+    /* SUCCESS */
     if (
         m === "respiration" &&
         a === "high" &&
@@ -258,29 +258,19 @@ function runSimulation() {
 
             const mito = document.getElementById("mitochondrion");
 
-if (mito) {
+            if (mito) {
+                mito.classList.remove("mitochondriaFormed");
+                void mito.offsetWidth;
+                mito.classList.add("mitochondriaFormed");
 
-    mito.classList.remove("mitochondriaFormed");
-
-    void mito.offsetWidth;
-
-    mito.classList.add("mitochondriaFormed");
-   mitoSound.currentTime = 0;
-mitoSound.play();
-
-    simulationLog.innerHTML += `
-    <br><br>
-    ENDOSYMBIOTIC EVENT DETECTED<br>
-    Proto-mitochondrial organelle stabilized.<br>
-    ATP synthesis efficiency increased by 430%.
-    `;
-}
-            if (simulationLog) {
-                simulationLog.innerHTML = `
-                STABLE INTEGRATION ACHIEVED<br><br>
-                SYMBIOTIC SHIFT DETECTED
-                `;
+                mitoSound.currentTime = 0;
+                mitoSound.play();
             }
+
+            simulationLog.innerHTML = `
+            STABLE INTEGRATION ACHIEVED<br><br>
+            SYMBIOTIC SHIFT DETECTED
+            `;
 
             setTimeout(() => {
                 secretSection?.classList.remove("hidden");
@@ -294,27 +284,66 @@ mitoSound.play();
     /* LYSIS */
     if (a === "high" && r === "active") {
 
-    setTimeout(() => {
+        setTimeout(() => {
 
-        ecoli?.classList.add("lysisState");
+            ecoli?.classList.add("lysisState");
 
-        /* PLAY SOUND EXACTLY WHEN LYSIS HAPPENS */
-        lysisSound.currentTime = 0;
-        lysisSound.play();
+            lysisSound.currentTime = 0;
+            lysisSound.play();
 
-        simulationLog.innerHTML = `
-        LYTIC CASCADE INITIATED<br><br>
-        Uncontrolled phage replication detected.<br>
-        Cell membrane rupture imminent.
-        `;
+            simulationLog.innerHTML = `
+            LYTIC CASCADE INITIATED<br><br>
+            Uncontrolled phage replication detected.<br>
+            Cell membrane rupture imminent.
+            `;
 
-    }, 4300);
+        }, 4300);
 
-    return;
-}
+        return;
+    }
+
     /* LOW ATP */
     if (a === "low") {
 
+        setTimeout(() => {
+
+            ecoli?.classList.add("failureState");
+
+            failureSound.currentTime = 0;
+            failureSound.play();
+
+            simulationLog.innerHTML = `
+            DORMANT INFECTION DETECTED<br><br>
+            ATP depletion prevents replication.<br>
+            Viral genome remains inactive.
+            `;
+
+        }, 4300);
+
+        return;
+    }
+
+    /* DNA DAMAGE */
+    if (d === "errorprone") {
+
+        setTimeout(() => {
+
+            ecoli?.classList.add("failureState");
+
+            failureSound.currentTime = 0;
+            failureSound.play();
+
+            simulationLog.innerHTML = `
+            GENOMIC INSTABILITY DETECTED<br><br>
+            Error-prone DNA repair caused lethal mutations.
+            `;
+
+        }, 4300);
+
+        return;
+    }
+
+    /* DEFAULT FAILURE */
     setTimeout(() => {
 
         ecoli?.classList.add("failureState");
@@ -323,39 +352,9 @@ mitoSound.play();
         failureSound.play();
 
         simulationLog.innerHTML = `
-        DORMANT INFECTION DETECTED<br><br>
-        ATP depletion prevents replication.<br>
-        Viral genome remains inactive.
+        INFECTION FAILED<br><br>
+        Host-cell environment incompatible with phage integration.
         `;
 
     }, 4300);
-
-    return;
 }
-}, 4300);
-    /* DNA DAMAGE */
-    if (d === "errorprone") {
-
-    failureSound.play();
-
-    setTimeout(() => {
-        ecoli?.classList.add("failureState");
-    }, 4300);
-
-    return;
-}
-
-    /* DEFAULT FAILURE */
-    setTimeout(() => {
-
-    ecoli?.classList.add("failureState");
-
-    failureSound.currentTime = 0;
-    failureSound.play();
-
-    simulationLog.innerHTML = `
-    INFECTION FAILED<br><br>
-    Host-cell environment incompatible with phage integration.
-    `;
-
-}, 4300);
