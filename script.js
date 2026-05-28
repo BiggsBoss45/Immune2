@@ -234,7 +234,7 @@ function animatePhageAttack() {
    RUN SIMULATION
 ========================= */
 
-function startImageReconstruction() {
+function startImageReconstruction(onComplete) {
 
     const progressBar = document.getElementById("progressBar");
     const renderPercent = document.getElementById("renderPercent");
@@ -245,7 +245,13 @@ function startImageReconstruction() {
 
     let progress = 0;
 
-    overlay?.classList.add("active");
+   overlay?.classList.remove("active");
+
+if (onComplete) {
+    setTimeout(() => {
+        onComplete();
+    }, 1800);
+}
 
     const interval = setInterval(() => {
 
@@ -296,7 +302,11 @@ function runSimulation() {
 
     secretSection?.classList.remove("hidden");
 
-    startImageReconstruction();
+    startImageReconstruction(() => {
+
+    window.location.href = "recovered-image.html";
+
+});
 
 }, 2500);
 
