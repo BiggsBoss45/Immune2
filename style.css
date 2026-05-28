@@ -376,25 +376,15 @@ body::after{
 
 /* PHAGE */
 
-#phage{
-    position:absolute;
-
-    width:45px;
-    height:60px;
-
-    left:-160px;
-    top:22%;
-
-    transform:translateY(-50%);
-
-    z-index:5;
-
 #phage {
-    width: 140px;
-    height: 190px;
-    transform: scale(0.55);
+    position: absolute;
+    width: 80px;
+    height: 110px;
+    left: -160px;
+    top: 25%;
+    transform: scale(0.35);
     transform-origin: center;
-}
+    z-index: 5;
 }
 /* =========================
    PHAGE CAPSID
