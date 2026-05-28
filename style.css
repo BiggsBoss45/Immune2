@@ -388,6 +388,13 @@ body::after{
     transform:translateY(-50%);
 
     z-index:5;
+
+#phage {
+    width: 140px;
+    height: 190px;
+    transform: scale(0.55);
+    transform-origin: center;
+}
 }
 /* =========================
    PHAGE CAPSID
@@ -504,18 +511,11 @@ body::after{
         transform:rotate(0deg);
     }
 }
-.tailSheath{
-    width:22px;
-    height:90px;
-    margin:auto;
-    background:
-    repeating-linear-gradient(
-        to bottom,
-        white,
-        white 5px,
-        #444 5px,
-        #444 10px
-    );
+.tailSheath {
+    width: 22px;
+    height: 90px;
+    margin: auto;
+    background: #444;
 }
 
 .tailNeedle{
