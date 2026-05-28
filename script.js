@@ -216,8 +216,22 @@ function runSimulation() {
             ecoli?.classList.add("successState");
 
             const mito = document.getElementById("mitochondrion");
-            mito?.classList.add("mitochondriaFormed");
 
+if (mito) {
+
+    mito.classList.remove("mitochondriaFormed");
+
+    void mito.offsetWidth;
+
+    mito.classList.add("mitochondriaFormed");
+
+    simulationLog.innerHTML += `
+    <br><br>
+    ENDOSYMBIOTIC EVENT DETECTED<br>
+    Proto-mitochondrial organelle stabilized.<br>
+    ATP synthesis efficiency increased by 430%.
+    `;
+}
             if (simulationLog) {
                 simulationLog.innerHTML = `
                 STABLE INTEGRATION ACHIEVED<br><br>
