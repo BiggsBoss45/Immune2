@@ -21,26 +21,17 @@ let infectionData = {
 ========================= */
 
 const clickSound = new Audio("click.mp3");
-
 const injectSound = new Audio("inject.mp3");
-
 const lysisSound = new Audio("lysis.mp3");
-
 const failureSound = new Audio("failure.mp3");
-
 const mitoSound = new Audio("mitochondria.mp3");
 
-/* volume balancing */
-
 clickSound.volume = 0.35;
-
 injectSound.volume = 0.6;
-
 lysisSound.volume = 0.8;
-
 failureSound.volume = 0.45;
-
 mitoSound.volume = 0.7;
+
 /* =========================
    BOOT SYSTEM
 ========================= */
@@ -51,29 +42,22 @@ window.addEventListener("DOMContentLoaded", () => {
     const bootScreen = document.getElementById("bootScreen");
     const terminalSection = document.getElementById("terminalSection");
 
-    console.log("BOOT INIT:", continueBtn, bootScreen, terminalSection);
-
     if (!continueBtn || !bootScreen || !terminalSection) return;
 
     continueBtn.addEventListener("click", () => {
-
-        console.log("BUTTON CLICKED");
-
         bootScreen.style.display = "none";
         terminalSection.classList.remove("hidden");
-
         initSimulation();
     });
 
-    /* ✅ CLICK SOUND SAFELY INSIDE DOM READY */
     document.querySelectorAll("button").forEach(button => {
         button.addEventListener("click", () => {
             clickSound.currentTime = 0;
             clickSound.play();
         });
     });
-
 });
+
 /* =========================
    INIT SIMULATION
 ========================= */
@@ -98,7 +82,7 @@ function initSimulation() {
 }
 
 /* =========================
-   RESET SIMULATION
+   RESET
 ========================= */
 
 function resetSimulation() {
@@ -116,52 +100,16 @@ function resetSimulation() {
     if (phage) {
         phage.style.left = "-220px";
     }
-
-    document.querySelectorAll(".fadeOut").forEach(el => {
-        el.classList.remove("fadeOut");
-        el.style.opacity = "";
-        el.style.transform = "";
-    });
 }
 
-function animateRNAInsideCell() {
-
-    const rna = document.getElementById("rnaParticle");
-    const cell = document.getElementById("ecoli");
-
-    if (!rna || !cell) return;
-
-    /* start at injection point */
-    rna.style.opacity = "1";
-    rna.style.left = "55%";
-    rna.style.top = "45%";
-
-    rna.animate([
-        { transform: "translate(0px, 0px) scale(1)" },
-        { transform: "translate(-40px, 20px) scale(1.2)" },
-        { transform: "translate(80px, -30px) scale(0.9)" },
-        { transform: "translate(20px, 60px) scale(1.1)" },
-        { transform: "translate(120px, 10px) scale(0.8)" }
-    ], {
-        duration: 2200,
-        easing: "ease-in-out",
-        fill: "forwards"
-    });
-
-    /* fade out at end (integration moment) */
-    setTimeout(() => {
-        rna.style.opacity = "0";
-    }, 2100);
-}
 /* =========================
-   PHAGE ATTACK SEQUENCE
+   PHAGE ANIMATION (UNCHANGED)
 ========================= */
 
 function animatePhageAttack() {
 
     if (!phage) return;
 
-    /* MOVE PHAGE */
     phage.animate([
         { left: "-180px", top: "32%" },
         { left: "43%", top: "30%" }
@@ -171,12 +119,10 @@ function animatePhageAttack() {
         easing: "ease-in-out"
     });
 
-    /* CAMERA ZOOM IN */
     setTimeout(() => {
         cameraLayer?.classList.add("zoomedIn");
     }, 1200);
 
-    /* INJECTION EVENT */
     setTimeout(() => {
 
         const needle = document.querySelector(".tailNeedle");
@@ -190,104 +136,24 @@ function animatePhageAttack() {
         });
 
         infectionData.injected = true;
-       animateRNAInsideCell();
 
-        /* RNA RELEASE */
         setTimeout(() => {
-
             infectionData.rnaInsideCell = true;
-           injectSound.currentTime = 0;
-           injectSound.play();
-
-            if (viralRNA) {
-                viralRNA.style.opacity = "1";
-                viralRNA.style.width = "140px";
-            }
-
-            if (simulationLog) {
-                simulationLog.innerHTML += `
-                <br><br>RNA TRANSFER COMPLETE:<br>
-                Viral genome successfully injected into host cytoplasm.
-                `;
-            }
-
-            /* CAPSIDS DISASSEMBLE */
-            setTimeout(() => {
-
-                document.querySelector(".capsidGlass")?.classList.add("fadeOut");
-                document.querySelector(".tailSheath")?.classList.add("fadeOut");
-                document.querySelector(".tailNeedle")?.classList.add("fadeOut");
-
-            }, 900);
+            injectSound.currentTime = 0;
+            injectSound.play();
 
         }, 600);
 
     }, 3300);
 
-    /* CAMERA ZOOM OUT */
     setTimeout(() => {
         cameraLayer?.classList.remove("zoomedIn");
     }, 5000);
 }
 
 /* =========================
-   RUN SIMULATION
+   MAIN LOGIC
 ========================= */
-
-function startImageReconstruction(onComplete) {
-
-    const progressBar = document.getElementById("progressBar");
-    const renderPercent = document.getElementById("renderPercent");
-    const renderStatus = document.getElementById("renderStatus");
-    const imageLabel = document.getElementById("imageLabel");
-    const recoveredImage = document.getElementById("recoveredImage");
-    const overlay = document.getElementById("renderOverlay");
-
-    let progress = 0;
-
-   overlay?.classList.remove("active");
-
-if (onComplete) {
-    setTimeout(() => {
-        onComplete();
-    }, 1800);
-}
-
-    const interval = setInterval(() => {
-
-        progress += Math.floor(Math.random() * 7) + 2;
-
-        if (progress > 100) progress = 100;
-
-        progressBar.style.width = progress + "%";
-        renderPercent.innerHTML = progress + "%";
-
-        if (progress >= 25) {
-            renderStatus.innerHTML = "REBUILDING DAMAGED IMAGE DATA...";
-        }
-
-        if (progress >= 55) {
-            renderStatus.innerHTML = "RECOVERING PIXEL STRUCTURE...";
-        }
-
-        if (progress >= 75) {
-            imageLabel.classList.remove("hidden");
-        }
-
-        if (progress >= 100) {
-
-            clearInterval(interval);
-
-            renderStatus.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
-
-            recoveredImage?.classList.add("revealed");
-
-            overlay?.classList.remove("active");
-        }
-
-    }, 180);
-}
-
 
 function runSimulation() {
 
@@ -298,134 +164,52 @@ function runSimulation() {
     const r = ribosomeState?.value;
     const d = repairPathway?.value;
 
-    setTimeout(() => {
-
-    secretSection?.classList.remove("hidden");
-
-    startImageReconstruction(() => {
-
-    window.location.href = "recovered-image.html";
-
-});
-
-}, 2500);
-
     animatePhageAttack();
 
-    /* SUCCESS */
-    /* SUCCESS */
-if (
-    m === "respiration" &&
-    a === "high" &&
-    r === "active" &&
-    d === "recombinational"
-) {
+    /* =========================
+       SUCCESS PATH
+    ========================== */
 
-    setTimeout(() => {
+    if (
+        m === "respiration" &&
+        a === "high" &&
+        r === "active" &&
+        d === "recombinational"
+    ) {
 
-        ecoli?.classList.add("successState");
+        setTimeout(() => {
 
-        const mito = document.getElementById("mitochondrion");
+            ecoli?.classList.add("successState");
 
-        if (mito) {
+            const mito = document.getElementById("mitochondrion");
 
-            mito.classList.remove("mitochondriaFormed");
+            if (mito) {
+                mito.classList.remove("mitochondriaFormed");
+                void mito.offsetWidth;
+                mito.classList.add("mitochondriaFormed");
 
-            void mito.offsetWidth;
+                mitoSound.currentTime = 0;
+                mitoSound.play();
+            }
 
-            mito.classList.add("mitochondriaFormed");
+            simulationLog.innerHTML = "SYMBIOTIC SHIFT DETECTED";
 
-            mitoSound.currentTime = 0;
-            mitoSound.play();
-        }
+        }, 4300);
 
-        simulationLog.innerHTML = `
-        STABLE INTEGRATION ACHIEVED<br><br>
-        SYMBIOTIC SHIFT DETECTED
-        `;
-
-    }, 4300);
-
-    /* IMAGE RECOVERY SEQUENCE */
-    setTimeout(() => {
-
-        secretSection?.classList.remove("hidden");
-
-        localStorage.setItem("phase3Solved", "true");
-
-        startImageReconstruction(() => {
-
+        setTimeout(() => {
+            localStorage.setItem("phase3Result", "correct");
             window.location.href = "recovered-image.html";
-
-        });
-
-    }, 6200);
-
-    return;
-}
-    /* LYSIS */
-    if (a === "high" && r === "active") {
-
-        setTimeout(() => {
-
-            ecoli?.classList.add("lysisState");
-
-            lysisSound.currentTime = 0;
-            lysisSound.play();
-
-            simulationLog.innerHTML = `
-            LYTIC CASCADE INITIATED<br><br>
-            Uncontrolled phage replication detected.<br>
-            Cell membrane rupture imminent.
-            `;
-
-        }, 4300);
+        }, 6500);
 
         return;
     }
 
-    /* LOW ATP */
-    if (a === "low") {
+    /* =========================
+       FAILURE PATHS
+    ========================== */
 
-        setTimeout(() => {
+    let result = "wrong";
 
-            ecoli?.classList.add("failureState");
-
-            failureSound.currentTime = 0;
-            failureSound.play();
-
-            simulationLog.innerHTML = `
-            DORMANT INFECTION DETECTED<br><br>
-            ATP depletion prevents replication.<br>
-            Viral genome remains inactive.
-            `;
-
-        }, 4300);
-
-        return;
-    }
-
-    /* DNA DAMAGE */
-    if (d === "errorprone") {
-
-        setTimeout(() => {
-
-            ecoli?.classList.add("failureState");
-
-            failureSound.currentTime = 0;
-            failureSound.play();
-
-            simulationLog.innerHTML = `
-            GENOMIC INSTABILITY DETECTED<br><br>
-            Error-prone DNA repair caused lethal mutations.
-            `;
-
-        }, 4300);
-
-        return;
-    }
-
-    /* DEFAULT FAILURE */
     setTimeout(() => {
 
         ecoli?.classList.add("failureState");
@@ -433,10 +217,12 @@ if (
         failureSound.currentTime = 0;
         failureSound.play();
 
-        simulationLog.innerHTML = `
-        INFECTION FAILED<br><br>
-        Host-cell environment incompatible with phage integration.
-        `;
+        simulationLog.innerHTML = "INFECTION FAILED";
 
     }, 4300);
+
+    setTimeout(() => {
+        localStorage.setItem("phase3Result", result);
+        window.location.href = "recovered-image.html";
+    }, 6500);
 }
