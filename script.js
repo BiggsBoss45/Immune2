@@ -1,33 +1,6 @@
 console.log("BOOT SCRIPT LOADED");
 
 /* =========================
-   BOOT SYSTEM
-========================= */
-
-window.addEventListener("DOMContentLoaded", () => {
-
-    console.log("DOM READY");
-
-    const continueBtn = document.getElementById("continueBtn");
-    const bootScreen = document.getElementById("bootScreen");
-    const terminalSection = document.getElementById("terminalSection");
-
-    if (!continueBtn || !bootScreen || !terminalSection) {
-        console.error("BOOT ELEMENT MISSING");
-        return;
-    }
-
-    continueBtn.addEventListener("click", () => {
-        console.log("ENTER TERMINAL CLICKED");
-
-        bootScreen.style.display = "none";
-        terminalSection.classList.remove("hidden");
-
-        initSimulation(); // IMPORTANT: only init AFTER UI is visible
-    });
-});
-
-/* =========================
    GLOBAL STATE
 ========================= */
 
@@ -35,6 +8,7 @@ let metabolism, atpLevel, ribosomeState, repairPathway;
 let phage, ecoli, viralRNA;
 let simulationLog, runBtn;
 let secretSection;
+let cameraLayer;
 
 let infectionData = {
     injected: false,
@@ -42,7 +16,25 @@ let infectionData = {
 };
 
 /* =========================
-   INIT
+   BOOT SYSTEM
+========================= */
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    const continueBtn = document.getElementById("continueBtn");
+    const bootScreen = document.getElementById("bootScreen");
+    const terminalSection = document.getElementById("terminalSection");
+
+    continueBtn?.addEventListener("click", () => {
+        bootScreen.style.display = "none";
+        terminalSection.classList.remove("hidden");
+
+        initSimulation();
+    });
+});
+
+/* =========================
+   INIT SIMULATION
 ========================= */
 
 function initSimulation() {
@@ -58,17 +50,20 @@ function initSimulation() {
 
     simulationLog = document.getElementById("simulationLog");
     runBtn = document.getElementById("runBtn");
-
     secretSection = document.getElementById("secretSection");
+    cameraLayer = document.getElementById("cameraLayer");
 
     runBtn?.addEventListener("click", runSimulation);
 }
 
 /* =========================
-   RESET
+   RESET SIMULATION
 ========================= */
 
 function resetSimulation() {
+
+    infectionData.injected = false;
+    infectionData.rnaInsideCell = false;
 
     ecoli?.classList.remove("successState", "failureState", "lysisState");
 
@@ -81,18 +76,22 @@ function resetSimulation() {
         phage.style.left = "-220px";
     }
 
-    infectionData.injected = false;
-    infectionData.rnaInsideCell = false;
+    document.querySelectorAll(".fadeOut").forEach(el => {
+        el.classList.remove("fadeOut");
+        el.style.opacity = "";
+        el.style.transform = "";
+    });
 }
 
 /* =========================
-   PHAGE ATTACK
+   PHAGE ATTACK SEQUENCE
 ========================= */
 
 function animatePhageAttack() {
 
     if (!phage) return;
 
+    /* MOVE PHAGE */
     phage.animate([
         { left: "-180px", top: "32%" },
         { left: "43%", top: "30%" }
@@ -102,12 +101,12 @@ function animatePhageAttack() {
         easing: "ease-in-out"
     });
 
-    /* ZOOM IN */
+    /* CAMERA ZOOM IN */
     setTimeout(() => {
-        document.getElementById("cameraLayer")?.classList.add("zoomedIn");
+        cameraLayer?.classList.add("zoomedIn");
     }, 1200);
 
-    /* INJECTION */
+    /* INJECTION EVENT */
     setTimeout(() => {
 
         const needle = document.querySelector(".tailNeedle");
@@ -122,6 +121,7 @@ function animatePhageAttack() {
 
         infectionData.injected = true;
 
+        /* RNA RELEASE */
         setTimeout(() => {
 
             infectionData.rnaInsideCell = true;
@@ -138,16 +138,12 @@ function animatePhageAttack() {
                 `;
             }
 
-            /* DISASSEMBLY (FIXED) */
+            /* CAPSIDS DISASSEMBLE */
             setTimeout(() => {
 
-                const capsid = document.querySelector(".capsidGlass");
-                const tail = document.querySelector(".tailSheath");
-                const needle = document.querySelector(".tailNeedle");
-
-                capsid?.classList.add("fadeOut");
-                tail?.classList.add("fadeOut");
-                needle?.classList.add("fadeOut");
+                document.querySelector(".capsidGlass")?.classList.add("fadeOut");
+                document.querySelector(".tailSheath")?.classList.add("fadeOut");
+                document.querySelector(".tailNeedle")?.classList.add("fadeOut");
 
             }, 900);
 
@@ -155,9 +151,9 @@ function animatePhageAttack() {
 
     }, 3300);
 
-    /* ZOOM OUT */
+    /* CAMERA ZOOM OUT */
     setTimeout(() => {
-        document.getElementById("cameraLayer")?.classList.remove("zoomedIn");
+        cameraLayer?.classList.remove("zoomedIn");
     }, 5000);
 }
 
@@ -178,7 +174,7 @@ function runSimulation() {
 
     animatePhageAttack();
 
-    /* SUCCESS */
+    /* SUCCESS PATH */
     if (
         m === "respiration" &&
         a === "high" &&
@@ -192,10 +188,12 @@ function runSimulation() {
             const mito = document.getElementById("mitochondrion");
             mito?.classList.add("mitochondriaFormed");
 
-            simulationLog.innerHTML = `
-            STABLE INTEGRATION ACHIEVED<br><br>
-            SYMBIOTIC SHIFT DETECTED
-            `;
+            if (simulationLog) {
+                simulationLog.innerHTML = `
+                STABLE INTEGRATION ACHIEVED<br><br>
+                SYMBIOTIC SHIFT DETECTED
+                `;
+            }
 
             setTimeout(() => {
                 secretSection?.classList.remove("hidden");
@@ -224,6 +222,6 @@ function runSimulation() {
         return;
     }
 
-    /* DEFAULT */
+    /* DEFAULT FAILURE */
     setTimeout(() => ecoli?.classList.add("failureState"), 4300);
 }
