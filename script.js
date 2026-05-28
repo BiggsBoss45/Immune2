@@ -298,14 +298,54 @@ mitoSound.play();
 
         ecoli?.classList.add("lysisState");
 
+        /* PLAY SOUND EXACTLY WHEN LYSIS HAPPENS */
         lysisSound.currentTime = 0;
         lysisSound.play();
+
+        simulationLog.innerHTML = `
+        LYTIC CASCADE INITIATED<br><br>
+        Uncontrolled phage replication detected.<br>
+        Cell membrane rupture imminent.
+        `;
 
     }, 4300);
 
     return;
 }
     /* LOW ATP */
+    if (a === "low") {
+
+    setTimeout(() => {
+
+        ecoli?.classList.add("failureState");
+
+        failureSound.currentTime = 0;
+        failureSound.play();
+
+        simulationLog.innerHTML = `
+        DORMANT INFECTION DETECTED<br><br>
+        ATP depletion prevents replication.<br>
+        Viral genome remains inactive.
+        `;
+
+    }, 4300);
+
+    return;
+}
+}, 4300);
+    /* DNA DAMAGE */
+    if (d === "errorprone") {
+
+    failureSound.play();
+
+    setTimeout(() => {
+        ecoli?.classList.add("failureState");
+    }, 4300);
+
+    return;
+}
+
+    /* DEFAULT FAILURE */
     setTimeout(() => {
 
     ecoli?.classList.add("failureState");
@@ -313,17 +353,9 @@ mitoSound.play();
     failureSound.currentTime = 0;
     failureSound.play();
 
-}, 4300);
-    /* DNA DAMAGE */
-    if (d === "errorprone") {
-        setTimeout(() => ecoli?.classList.add("failureState"), 4300);
-       failureSound.currentTime = 0;
-failureSound.play();
-        return;
-    }
+    simulationLog.innerHTML = `
+    INFECTION FAILED<br><br>
+    Host-cell environment incompatible with phage integration.
+    `;
 
-    /* DEFAULT FAILURE */
-    setTimeout(() => ecoli?.classList.add("failureState"), 4300);
-   failureSound.currentTime = 0;
-failureSound.play();
-}
+}, 4300);
