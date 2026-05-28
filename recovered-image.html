@@ -157,12 +157,16 @@ body {
     letter-spacing: 2px;
     transition: 0.2s;
     z-index: 200;
-    display: none;
 }
 
 #backBtn:hover {
     background: cyan;
     color: black;
+}
+
+/* LOCK STATE */
+.locked #imageContainer {
+    display: none;
 }
 </style>
 </head>
@@ -192,14 +196,15 @@ const statusText = document.getElementById("statusText");
 const container = document.getElementById("imageContainer");
 const backBtn = document.getElementById("backBtn");
 
+/* ✅ ALWAYS WORKS */
+backBtn.addEventListener("click", () => {
+    window.location.href = "index.html"; 
+    // change this to your real simulator file name
+});
+
 function lockScreen() {
     statusText.innerHTML = "ACCESS DENIED // IMAGE DATA CORRUPTED";
     container.style.display = "none";
-
-    backBtn.style.display = "block";
-    backBtn.addEventListener("click", () => {
-        window.location.href = "index.html"; // change to your simulator page
-    });
 }
 
 function runReconstruction() {
@@ -219,6 +224,7 @@ function runReconstruction() {
     }, 6500);
 }
 
+/* CONTROL FLOW */
 if (!solved) {
     lockScreen();
 } else {
