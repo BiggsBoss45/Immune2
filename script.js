@@ -234,6 +234,55 @@ function animatePhageAttack() {
    RUN SIMULATION
 ========================= */
 
+function startImageReconstruction() {
+
+    const progressBar = document.getElementById("progressBar");
+    const renderPercent = document.getElementById("renderPercent");
+    const renderStatus = document.getElementById("renderStatus");
+    const imageLabel = document.getElementById("imageLabel");
+    const recoveredImage = document.getElementById("recoveredImage");
+    const overlay = document.getElementById("renderOverlay");
+
+    let progress = 0;
+
+    overlay?.classList.add("active");
+
+    const interval = setInterval(() => {
+
+        progress += Math.floor(Math.random() * 7) + 2;
+
+        if (progress > 100) progress = 100;
+
+        progressBar.style.width = progress + "%";
+        renderPercent.innerHTML = progress + "%";
+
+        if (progress >= 25) {
+            renderStatus.innerHTML = "REBUILDING DAMAGED IMAGE DATA...";
+        }
+
+        if (progress >= 55) {
+            renderStatus.innerHTML = "RECOVERING PIXEL STRUCTURE...";
+        }
+
+        if (progress >= 75) {
+            imageLabel.classList.remove("hidden");
+        }
+
+        if (progress >= 100) {
+
+            clearInterval(interval);
+
+            renderStatus.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
+
+            recoveredImage?.classList.add("revealed");
+
+            overlay?.classList.remove("active");
+        }
+
+    }, 180);
+}
+
+
 function runSimulation() {
 
     resetSimulation();
@@ -243,7 +292,13 @@ function runSimulation() {
     const r = ribosomeState?.value;
     const d = repairPathway?.value;
 
-    secretSection?.classList.add("hidden");
+    setTimeout(() => {
+
+    secretSection?.classList.remove("hidden");
+
+    startImageReconstruction();
+
+}, 2500);
 
     animatePhageAttack();
 
