@@ -50,11 +50,20 @@ window.addEventListener("DOMContentLoaded", () => {
     const bootScreen = document.getElementById("bootScreen");
     const terminalSection = document.getElementById("terminalSection");
 
-    continueBtn?.addEventListener("click", () => {
+    console.log("BOOT INIT:", continueBtn, bootScreen, terminalSection);
+
+    if (!continueBtn || !bootScreen || !terminalSection) return;
+
+    continueBtn.addEventListener("click", () => {
+
+        console.log("BUTTON CLICKED");
+
         bootScreen.style.display = "none";
         terminalSection.classList.remove("hidden");
 
         initSimulation();
+    });
+});
 
        /* BUTTON CLICK AUDIO */
 
