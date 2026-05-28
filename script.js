@@ -145,29 +145,26 @@ function animatePhageAttack() {
             /* DISASSEMBLY */
             setTimeout(() => {
 
-                const capsid = document.querySelector(".capsidGlass");
-                const tail = document.querySelector(".tailSheath");
+    const capsid = document.querySelector(".capsidGlass");
+    const tail = document.querySelector(".tailSheath");
+    const needle = document.querySelector(".tailNeedle");
 
-                if (capsid) {
-                    capsid.style.transform = "translateY(-40px) scale(0.7)";
-                    capsid.style.opacity = "0.4";
-                }
+    if (capsid) {
+        capsid.style.transform = "translateY(-40px) scale(0.6)";
+        capsid.style.opacity = "0";
+    }
 
-                if (tail) {
-                    tail.style.transform = "translateY(60px) rotate(20deg)";
-                    tail.style.opacity = "0.3";
-                }
+    if (tail) {
+        tail.style.transform = "translateY(60px) rotate(20deg)";
+        tail.style.opacity = "0";
+    }
 
-                if (needle) {
-                    needle.style.transform = "translateY(80px)";
-                    needle.style.opacity = "0.2";
-                }
+    if (needle) {
+        needle.style.transform = "translateY(80px)";
+        needle.style.opacity = "0";
+    }
 
-            }, 900);
-
-        }, 600);
-
-    }, 3300);
+}, 900);
 
     /* ZOOM OUT */
     setTimeout(() => {
