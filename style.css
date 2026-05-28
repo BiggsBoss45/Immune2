@@ -822,7 +822,9 @@ body::after{
 .scanlines {
     z-index: 50;
 }
-
+.scanlines {
+    pointer-events: none;
+}
 .uiPanel {
     z-index: 9999;
 }
