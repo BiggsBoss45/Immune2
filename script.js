@@ -293,20 +293,27 @@ mitoSound.play();
 
     /* LYSIS */
     if (a === "high" && r === "active") {
-        setTimeout(() => ecoli?.classList.add("lysisState"), 4300);
-       lysisSound.currentTime = 0;
-      lysisSound.play();
-        return;
-    }
 
+    setTimeout(() => {
+
+        ecoli?.classList.add("lysisState");
+
+        lysisSound.currentTime = 0;
+        lysisSound.play();
+
+    }, 4300);
+
+    return;
+}
     /* LOW ATP */
-    if (a === "low") {
-        setTimeout(() => ecoli?.classList.add("failureState"), 4300);
-       failureSound.currentTime = 0;
-failureSound.play();
-        return;
-    }
+    setTimeout(() => {
 
+    ecoli?.classList.add("failureState");
+
+    failureSound.currentTime = 0;
+    failureSound.play();
+
+}, 4300);
     /* DNA DAMAGE */
     if (d === "errorprone") {
         setTimeout(() => ecoli?.classList.add("failureState"), 4300);
