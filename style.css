@@ -50,43 +50,21 @@ html, body {
     position: fixed;
     inset: 0;
     z-index: 999999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
 }
 
 .bootBox {
-    width: 700px;
-    max-width: 90%;
-    padding: 40px;
-    border: 2px solid #00ff88;
-    background: rgba(0,0,0,.85);
-    text-align: center;
-    box-shadow: 0 0 30px #00ff88;
+    position: relative;
     z-index: 1000000;
 }
 
-button {
-    background: black;
-    color: #00ff88;
-    border: 2px solid #00ff88;
-    padding: 14px 22px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: .25s;
-}
-
-button:hover {
-    background: #00ff88;
-    color: black;
-}
-
-/* IMPORTANT: ensure boot button ALWAYS clickable */
 #continueBtn {
-    position: relative;
-    z-index: 10000000;
     pointer-events: auto;
+    position: relative;
+    z-index: 1000001;
+}
+
+.scanlines {
+    pointer-events: none;
 }
 
 /* =========================
