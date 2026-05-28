@@ -154,6 +154,282 @@ header h1 {
 }
 
 /* =========================
+   CAPSULE (OUTER SLIME LAYER)
+========================= */
+
+#ecoli::after{
+    content:"";
+
+    position:absolute;
+
+    inset:-18px;
+
+    border-radius:180px;
+
+    border:3px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        0 0 35px rgba(255,255,255,.08),
+        inset 0 0 25px rgba(255,255,255,.04);
+
+    pointer-events:none;
+}
+
+/* =========================
+   CELL WALL
+========================= */
+
+#cellWall{
+    position:absolute;
+
+    inset:4px;
+
+    border-radius:155px;
+
+    border:4px solid rgba(255,255,255,.28);
+
+    box-shadow:
+        inset 0 0 18px rgba(255,255,255,.08);
+}
+
+/* =========================
+   CELL MEMBRANE
+========================= */
+
+#membrane{
+    position:absolute;
+
+    inset:16px;
+
+    border-radius:145px;
+
+    border:2px solid rgba(0,255,180,.45);
+
+    box-shadow:
+        inset 0 0 15px rgba(0,255,180,.15);
+
+    animation:membranePulse 4s infinite ease-in-out;
+}
+
+@keyframes membranePulse{
+
+    0%{
+        opacity:.45;
+    }
+
+    50%{
+        opacity:.9;
+    }
+
+    100%{
+        opacity:.45;
+    }
+}
+
+/* =========================
+   NUCLEOID REGION
+========================= */
+
+#nucleoid{
+    position:absolute;
+
+    width:280px;
+    height:120px;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%, -50%);
+
+    border-radius:50%;
+
+    border:3px dashed rgba(255,255,255,.7);
+
+    animation:rotateDNA 24s linear infinite;
+}
+
+#nucleoid::before{
+    content:"";
+
+    position:absolute;
+
+    inset:18px;
+
+    border-radius:50%;
+
+    border:2px dashed rgba(0,255,255,.5);
+}
+
+/* =========================
+   PLASMIDS
+========================= */
+
+.plasmid{
+    position:absolute;
+
+    width:58px;
+    height:58px;
+
+    border-radius:50%;
+
+    border:3px solid cyan;
+
+    opacity:.7;
+
+    animation:plasmidSpin 8s linear infinite;
+}
+
+.plasmid1{
+    top:40px;
+    left:90px;
+}
+
+.plasmid2{
+    bottom:40px;
+    right:100px;
+}
+
+@keyframes plasmidSpin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =========================
+   RIBOSOMES
+========================= */
+
+.ribosome{
+    position:absolute;
+
+    width:13px;
+    height:13px;
+
+    border-radius:50%;
+
+    background:#00ff88;
+
+    box-shadow:0 0 10px rgba(0,255,136,.5);
+
+    animation:ribosomeFloat 3s infinite alternate ease-in-out;
+}
+
+@keyframes ribosomeFloat{
+
+    from{
+        transform:translateY(0px);
+    }
+
+    to{
+        transform:translateY(-6px);
+    }
+}
+
+/* =========================
+   PILI
+========================= */
+
+.pili{
+    position:absolute;
+
+    width:70px;
+    height:2px;
+
+    background:rgba(255,255,255,.55);
+
+    transform-origin:left center;
+}
+
+.p1{
+    top:40px;
+    left:-40px;
+    transform:rotate(-25deg);
+}
+
+.p2{
+    top:90px;
+    left:-55px;
+    transform:rotate(5deg);
+}
+
+.p3{
+    bottom:50px;
+    left:-45px;
+    transform:rotate(25deg);
+}
+
+.p4{
+    top:60px;
+    right:-50px;
+    transform:rotate(20deg);
+}
+
+.p5{
+    bottom:60px;
+    right:-45px;
+    transform:rotate(-15deg);
+}
+
+/* =========================
+   FLAGELLA
+========================= */
+
+.flagella{
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    right:-170px;
+    top:20px;
+
+    border-radius:50%;
+
+    border:3px solid transparent;
+    border-top:3px solid rgba(255,255,255,.6);
+
+    transform:rotate(20deg);
+
+    animation:flagellaWave 2s infinite linear;
+}
+
+.flagella::before{
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    top:20px;
+    left:20px;
+
+    border-radius:50%;
+
+    border:3px solid transparent;
+    border-top:3px solid rgba(255,255,255,.35);
+}
+
+@keyframes flagellaWave{
+
+    0%{
+        transform:rotate(18deg);
+    }
+
+    50%{
+        transform:rotate(28deg);
+    }
+
+    100%{
+        transform:rotate(18deg);
+    }
+}
+/* =========================
    MITOCHONDRION
 ========================= */
 
