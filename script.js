@@ -313,41 +313,56 @@ function runSimulation() {
     animatePhageAttack();
 
     /* SUCCESS */
-    if (
-        m === "respiration" &&
-        a === "high" &&
-        r === "active" &&
-        d === "recombinational"
-    ) {
-        setTimeout(() => {
+    /* SUCCESS */
+if (
+    m === "respiration" &&
+    a === "high" &&
+    r === "active" &&
+    d === "recombinational"
+) {
 
-            ecoli?.classList.add("successState");
+    setTimeout(() => {
 
-            const mito = document.getElementById("mitochondrion");
+        ecoli?.classList.add("successState");
 
-            if (mito) {
-                mito.classList.remove("mitochondriaFormed");
-                void mito.offsetWidth;
-                mito.classList.add("mitochondriaFormed");
+        const mito = document.getElementById("mitochondrion");
 
-                mitoSound.currentTime = 0;
-                mitoSound.play();
-            }
+        if (mito) {
 
-            simulationLog.innerHTML = `
-            STABLE INTEGRATION ACHIEVED<br><br>
-            SYMBIOTIC SHIFT DETECTED
-            `;
+            mito.classList.remove("mitochondriaFormed");
 
-            setTimeout(() => {
-                secretSection?.classList.remove("hidden");
-            }, 2500);
+            void mito.offsetWidth;
 
-        }, 4300);
+            mito.classList.add("mitochondriaFormed");
 
-        return;
-    }
+            mitoSound.currentTime = 0;
+            mitoSound.play();
+        }
 
+        simulationLog.innerHTML = `
+        STABLE INTEGRATION ACHIEVED<br><br>
+        SYMBIOTIC SHIFT DETECTED
+        `;
+
+    }, 4300);
+
+    /* IMAGE RECOVERY SEQUENCE */
+    setTimeout(() => {
+
+        secretSection?.classList.remove("hidden");
+
+        localStorage.setItem("phase3Solved", "true");
+
+        startImageReconstruction(() => {
+
+            window.location.href = "recovered-image.html";
+
+        });
+
+    }, 6200);
+
+    return;
+}
     /* LYSIS */
     if (a === "high" && r === "active") {
 
