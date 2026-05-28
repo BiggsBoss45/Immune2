@@ -433,26 +433,198 @@ header h1 {
    MITOCHONDRION
 ========================= */
 
-#mitochondrion {
-    position: absolute;
-    width: 0;
-    height: 0;
-    left: 50%;
-    top: 55%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    opacity: 0;
-    background: radial-gradient(circle at 30% 30%, white, #aaa, #333);
+/* =========================
+   REALISTIC MITOCHONDRION
+========================= */
+
+#mitochondrion{
+    position:absolute;
+
+    width:0px;
+    height:0px;
+
+    left:50%;
+    top:55%;
+
+    transform:translate(-50%, -50%);
+
+    border-radius:60px;
+
+    opacity:0;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(circle at 30% 30%,
+        rgba(255,255,255,.9),
+        rgba(180,180,180,.7),
+        rgba(70,70,70,.95));
+
+    border:2px solid rgba(255,255,255,.35);
+
+    box-shadow:
+        0 0 25px rgba(255,255,255,.18),
+        inset 0 0 20px rgba(255,255,255,.12);
 }
 
-.mitochondriaFormed {
-    animation: mitoGrow 2.5s ease-out forwards;
+/* =========================
+   INNER MEMBRANE FOLDS
+========================= */
+
+#mitochondrion::before{
+    content:"";
+
+    position:absolute;
+
+    inset:8px;
+
+    border-radius:50px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 8px,
+            rgba(255,255,255,.22) 8px,
+            rgba(255,255,255,.22) 12px,
+            transparent 12px,
+            transparent 20px
+        );
+
+    opacity:.55;
+
+    filter:blur(.3px);
+
+    animation:cristaeShift 6s infinite linear;
 }
 
-@keyframes mitoGrow {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-    60% { opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+@keyframes cristaeShift{
+
+    from{
+        transform:translateX(0px);
+    }
+
+    to{
+        transform:translateX(8px);
+    }
+}
+
+/* =========================
+   ATP ENERGY CORE
+========================= */
+
+#mitochondrion::after{
+    content:"";
+
+    position:absolute;
+
+    width:26px;
+    height:26px;
+
+    border-radius:50%;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%, -50%);
+
+    background:rgba(0,255,255,.8);
+
+    box-shadow:
+        0 0 20px cyan,
+        0 0 45px rgba(0,255,255,.5);
+
+    animation:mitoCorePulse 2s infinite ease-in-out;
+}
+
+@keyframes mitoCorePulse{
+
+    0%{
+        transform:translate(-50%, -50%) scale(.8);
+        opacity:.6;
+    }
+
+    50%{
+        transform:translate(-50%, -50%) scale(1.2);
+        opacity:1;
+    }
+
+    100%{
+        transform:translate(-50%, -50%) scale(.8);
+        opacity:.6;
+    }
+}
+
+/* =========================
+   MITOCHONDRIA EMERGENCE
+========================= */
+
+.mitochondriaFormed{
+    animation:
+        mitoEmergence 2.8s forwards ease-out,
+        mitoFloat 5s infinite ease-in-out 2.8s;
+}
+
+@keyframes mitoEmergence{
+
+    0%{
+        width:0px;
+        height:0px;
+
+        opacity:0;
+
+        transform:
+            translate(-50%, -50%)
+            scale(.2)
+            rotate(-40deg);
+
+        filter:blur(12px);
+    }
+
+    30%{
+        opacity:.7;
+    }
+
+    60%{
+        width:120px;
+        height:55px;
+
+        opacity:1;
+
+        filter:blur(0px);
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.15)
+            rotate(6deg);
+    }
+
+    100%{
+        width:105px;
+        height:48px;
+
+        opacity:1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1)
+            rotate(0deg);
+    }
+}
+
+@keyframes mitoFloat{
+
+    0%{
+        transform:translate(-50%, -50%) translateY(0px);
+    }
+
+    50%{
+        transform:translate(-50%, -50%) translateY(-4px);
+    }
+
+    100%{
+        transform:translate(-50%, -50%) translateY(0px);
+    }
 }
 
 /* =========================
