@@ -199,7 +199,15 @@ if (!solved) {
     statusText.innerHTML = "ACCESS DENIED // IMAGE DATA CORRUPTED";
     container.style.display = "none";
 
-} else {
+    const backBtn = document.getElementById("backBtn");
+    backBtn.style.display = "block";
+
+    backBtn.addEventListener("click", () => {
+        window.location.href = "phase3.html"; // or your simulator file name
+    });
+
+}
+ else {
 
     setTimeout(() => {
         scanBar.classList.add("active");
