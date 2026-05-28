@@ -1,337 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>RECOVERED IMAGE</title>
-
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: black;
-            overflow: hidden;
-            font-family: Consolas, monospace;
-            color: #00ff88;
-        }
-
-        /* =========================
-           CRT OVERLAY
-        ========================== */
-
-        .crt::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(255,255,255,.05),
-                rgba(255,255,255,.05) 1px,
-                transparent 1px,
-                transparent 4px
-            );
-
-            z-index: 100;
-            opacity: .18;
-        }
-
-        .crt::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-
-            background: radial-gradient(
-                circle,
-                transparent 55%,
-                rgba(0,0,0,.45) 100%
-            );
-
-            z-index: 101;
-        }
-
-        /* =========================
-           TERMINAL CONTAINER
-        ========================== */
-
-        #terminal {
-            width: 100%;
-            height: 100vh;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            position: relative;
-
-            overflow: hidden;
-        }
-
-        /* =========================
-           STATUS TEXT
-        ========================== */
-
-        #statusText {
-            position: absolute;
-            top: 40px;
-
-            font-size: 1rem;
-            letter-spacing: 3px;
-
-            color: cyan;
-
-            text-shadow: 0 0 10px cyan;
-
-            z-index: 20;
-        }
-
-        /* =========================
-           IMAGE CONTAINER
-        ========================== */
-
-        #imageContainer {
-            position: relative;
-
-            width: 85vw;
-            height: 80vh;
-
-            border: 2px solid cyan;
-
-            overflow: hidden;
-
-            background: black;
-
-            box-shadow:
-                0 0 25px rgba(0,255,255,.35),
-                inset 0 0 40px rgba(0,255,255,.08);
-        }
-
-        /* =========================
-           IMAGE
-        ========================== */
-
-        #recoveredImage {
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-
-            filter:
-                brightness(.2)
-                contrast(1.4)
-                grayscale(.2);
-
-            opacity: 0;
-
-            transition:
-                opacity 3s ease,
-                filter 3s ease;
-        }
-
-        #recoveredImage.visible {
-            opacity: 1;
-
-            filter:
-                brightness(1)
-                contrast(1)
-                grayscale(0);
-        }
-
-        /* =========================
-           SCANNING BAR
-        ========================== */
-
-        #scanBar {
-            position: absolute;
-
-            top: -15%;
-            left: 0;
-
-            width: 100%;
-            height: 15%;
-
-            background: linear-gradient(
-                to bottom,
-                rgba(0,255,255,0),
-                rgba(0,255,255,.35),
-                rgba(255,255,255,.12),
-                rgba(0,255,255,0)
-            );
-
-            mix-blend-mode: screen;
-
-            pointer-events: none;
-
-            opacity: 0;
-
-            z-index: 50;
-        }
-
-        #scanBar.active {
-            opacity: 1;
-            animation: scanDown 6s linear forwards;
-        }
-
-        @keyframes scanDown {
-
-            from {
-                top: -20%;
-            }
-
-            to {
-                top: 120%;
-            }
-        }
-
-        /* =========================
-           PIXEL NOISE
-        ========================== */
-
-        #noise {
-            position: absolute;
-            inset: 0;
-
-            background-image:
-                radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
-
-            background-size: 4px 4px;
-
-            opacity: .08;
-
-            mix-blend-mode: screen;
-
-            animation: noiseMove .15s infinite linear;
-
-            pointer-events: none;
-
-            z-index: 60;
-        }
-
-        @keyframes noiseMove {
-
-            from {
-                transform: translateY(0px);
-            }
-
-            to {
-                transform: translateY(-4px);
-            }
-        }
-
-        /* =========================
-           GLITCH FLASH
-        ========================== */
-
-        .glitchFlash {
-            animation: glitchFlash .12s linear 6;
-        }
-
-        @keyframes glitchFlash {
-
-            0% {
-                transform: translateX(0px);
-            }
-
-            25% {
-                transform: translateX(-4px);
-            }
-
-            50% {
-                transform: translateX(4px);
-            }
-
-            100% {
-                transform: translateX(0px);
-            }
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RECOVERED IMAGE</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: black;
+    overflow: hidden;
+    font-family: Consolas, monospace;
+    color: #00ff88;
+}
+
+/* CRT */
+.crt::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,.05),
+        rgba(255,255,255,.05) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    opacity: .18;
+    z-index: 100;
+}
+
+.crt::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+        circle,
+        transparent 55%,
+        rgba(0,0,0,.45) 100%
+    );
+    z-index: 101;
+}
+
+/* Layout */
+#terminal {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#statusText {
+    position: absolute;
+    top: 40px;
+    font-size: 1rem;
+    letter-spacing: 3px;
+    color: cyan;
+    text-shadow: 0 0 10px cyan;
+}
+
+#imageContainer {
+    width: 85vw;
+    height: 80vh;
+    border: 2px solid cyan;
+    background: black;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 25px rgba(0,255,255,.35);
+}
+
+/* IMAGE */
+#recoveredImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    filter: brightness(.2) contrast(1.4) grayscale(.2);
+    transition: 3s ease;
+}
+
+#recoveredImage.visible {
+    opacity: 1;
+    filter: brightness(1) contrast(1) grayscale(0);
+}
+
+/* SCAN BAR */
+#scanBar {
+    position: absolute;
+    top: -20%;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,255,255,0),
+        rgba(0,255,255,.35),
+        rgba(255,255,255,.12),
+        rgba(0,255,255,0)
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+}
+
+#scanBar.active {
+    opacity: 1;
+    animation: scanDown 6s linear forwards;
+}
+
+@keyframes scanDown {
+    from { top: -20%; }
+    to { top: 120%; }
+}
+
+/* NOISE */
+#noise {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: .08;
+    pointer-events: none;
+}
+
+/* GLITCH */
+.glitchFlash {
+    animation: glitchFlash .12s linear 6;
+}
+
+@keyframes glitchFlash {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
+
+/* LOCK STATE */
+.locked {
+    display: none;
+}
+</style>
 </head>
+
 <body class="crt">
 
-    <div id="terminal">
+<div id="terminal">
 
-        <div id="statusText">
-            RECOVERING IMAGE DATA...
-        </div>
+    <div id="statusText">RECOVERING IMAGE DATA...</div>
 
-        <div id="imageContainer">
+    <div id="imageContainer">
 
-            <img
-                id="recoveredImage"
-                src="image1.jpg"
-                alt="Recovered Image"
-            >
+        <img id="recoveredImage" src="image1.jpg" alt="Recovered Image">
 
-            <div id="scanBar"></div>
-
-            <div id="noise"></div>
-
-        </div>
+        <div id="scanBar"></div>
+        <div id="noise"></div>
 
     </div>
 
-    <script>
+</div>
 
-        /* =========================
-           SECURITY CHECK
-        ========================== */
+<script>
+const solved = localStorage.getItem("phase3Solved") === "true";
 
-        if (localStorage.getItem("phase3Solved") !== "true") {
-            window.location.href = "phase3.html";
-        }
+const image = document.getElementById("recoveredImage");
+const scanBar = document.getElementById("scanBar");
+const statusText = document.getElementById("statusText");
+const container = document.getElementById("imageContainer");
 
-        const image = document.getElementById("recoveredImage");
-        const scanBar = document.getElementById("scanBar");
-        const statusText = document.getElementById("statusText");
-        const container = document.getElementById("imageContainer");
+if (!solved) {
 
-        /* =========================
-           START RENDER
-        ========================== */
+    statusText.innerHTML = "ACCESS DENIED // IMAGE DATA CORRUPTED";
+    container.style.display = "none";
 
-        setTimeout(() => {
+} else {
 
-            scanBar.classList.add("active");
+    setTimeout(() => {
+        scanBar.classList.add("active");
+        container.classList.add("glitchFlash");
+    }, 600);
 
-            container.classList.add("glitchFlash");
+    setTimeout(() => {
+        image.classList.add("visible");
+        statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
+    }, 3200);
 
-        }, 600);
-
-        /* =========================
-           IMAGE APPEARS
-        ========================== */
-
-        setTimeout(() => {
-
-            image.classList.add("visible");
-
-            statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
-
-        }, 3200);
-
-        /* =========================
-           END SCAN
-        ========================== */
-
-        setTimeout(() => {
-
-            scanBar.style.opacity = "0";
-
-        }, 6500);
-
-    </script>
+    setTimeout(() => {
+        scanBar.style.opacity = "0";
+    }, 6500);
+}
+</script>
 
 </body>
 </html>
