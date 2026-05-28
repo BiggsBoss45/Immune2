@@ -1071,3 +1071,114 @@ button {
 * {
     pointer-events: auto;
 }
+
+#secretSection {
+    margin-top: 50px;
+    border: 2px solid cyan;
+    background: rgba(0,20,30,.85);
+    padding: 35px;
+    box-shadow: 0 0 25px rgba(0,255,255,.3);
+}
+
+#secretSection h2 {
+    margin-bottom: 25px;
+    color: cyan;
+    font-size: 2rem;
+}
+
+#reconstructionConsole {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#renderStatus {
+    font-size: 1.1rem;
+    color: #00ff88;
+    letter-spacing: 2px;
+}
+
+#progressContainer {
+    width: 100%;
+    height: 26px;
+    border: 2px solid #00ff88;
+    background: black;
+    overflow: hidden;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(to right, #00ff88, cyan);
+    box-shadow: 0 0 15px cyan;
+    transition: width .2s linear;
+}
+
+#renderPercent {
+    font-size: 1rem;
+    color: white;
+}
+
+#imageLabel {
+    color: cyan;
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+#imageRenderArea {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    overflow: hidden;
+    border: 2px solid cyan;
+    background: black;
+}
+
+#recoveredImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    filter: brightness(0.2) contrast(1.5);
+    transition: opacity 3s ease, filter 3s ease;
+}
+
+#recoveredImage.revealed {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+}
+
+#renderOverlay {
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(0,255,255,.15),
+            rgba(0,255,255,.15) 2px,
+            transparent 2px,
+            transparent 5px
+        );
+
+    animation: scanRender 4s linear infinite;
+
+    pointer-events: none;
+
+    opacity: 0;
+}
+
+#renderOverlay.active {
+    opacity: 1;
+}
+
+@keyframes scanRender {
+
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
