@@ -132,6 +132,12 @@ body {
     pointer-events: none;
 }
 
+#canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 /* GLITCH */
 .glitchFlash {
     animation: glitchFlash .12s linear 6;
@@ -178,7 +184,7 @@ body {
     <div id="statusText">RECOVERING IMAGE DATA...</div>
 
     <div id="imageContainer">
-        <img id="recoveredImage" src="image1.jpg" alt="Recovered Image">
+        <canvas id="canvas"></canvas>
         <div id="scanBar"></div>
         <div id="noise"></div>
     </div>
@@ -188,50 +194,97 @@ body {
 </div>
 
 <script>
+
 const solved = localStorage.getItem("phase3Solved") === "true";
 
-const image = document.getElementById("recoveredImage");
+const container = document.getElementById("imageContainer");
 const scanBar = document.getElementById("scanBar");
 const statusText = document.getElementById("statusText");
-const container = document.getElementById("imageContainer");
 const backBtn = document.getElementById("backBtn");
 
 /* BACK BUTTON ALWAYS WORKS */
 backBtn.addEventListener("click", () => {
-    window.location.href = "index.html"; 
+    window.location.href = "index.html";
 });
 
-/* ❌ HARD STOP HERE */
+/* HARD LOCK */
 if (!solved) {
     statusText.innerHTML = "ACCESS DENIED // IMAGE DATA CORRUPTED";
-
     container.style.display = "none";
-    scanBar.style.display = "none";
-    image.style.display = "none";
-
-    backBtn.style.display = "block";
-
-    throw new Error("Locked: reconstruction aborted");
+    throw new Error("Locked");
 }
 
-/* =========================
-   ONLY RUN IF SOLVED
-========================= */
+/* RUN ONLY IF SOLVED */
+runReconstruction();
 
-setTimeout(() => {
-    scanBar.classList.add("active");
-    container.classList.add("glitchFlash");
-}, 600);
+function runReconstruction() {
 
-setTimeout(() => {
-    image.classList.add("visible");
-    statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
-}, 3200);
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-setTimeout(() => {
-    scanBar.style.opacity = "0";
-}, 6500);
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
 
+    const img = new Image();
+    img.src = "image1.jpg";
+
+    img.onload = () => {
+
+        const w = canvas.width;
+        const h = canvas.height;
+
+        /* offscreen buffer */
+        const buffer = document.createElement("canvas");
+        const bctx = buffer.getContext("2d");
+
+        buffer.width = w;
+        buffer.height = h;
+
+        bctx.drawImage(img, 0, 0, w, h);
+
+        const data = bctx.getImageData(0, 0, w, h).data;
+
+        ctx.clearRect(0, 0, w, h);
+
+        let i = 0;
+
+        function renderPixels() {
+
+            const batch = 5000;
+
+            for (let j = 0; j < batch; j++) {
+
+                if (i >= data.length) break;
+
+                const x = (i / 4) % w;
+                const y = Math.floor((i / 4) / w);
+
+                ctx.fillStyle = `rgba(${data[i]},${data[i+1]},${data[i+2]},${data[i+3]/255})`;
+                ctx.fillRect(x, y, 1, 1);
+
+                i += 4;
+            }
+
+            if (i < data.length) {
+                requestAnimationFrame(renderPixels);
+            } else {
+                statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
+            }
+        }
+
+        /* scan animation sync */
+        setTimeout(() => {
+            scanBar.classList.add("active");
+            container.classList.add("glitchFlash");
+        }, 600);
+
+        renderPixels();
+
+        setTimeout(() => {
+            scanBar.style.opacity = "0";
+        }, 6500);
+    };
+}
 /* CONTROL FLOW */
 if (!solved) {
     lockScreen();
