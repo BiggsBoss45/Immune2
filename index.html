@@ -229,31 +229,42 @@
 
         <!-- SECRET FILE -->
 
-        <section id="secretSection" class="hidden">
+<section id="secretSection" class="hidden">
 
-            <h2>ARCHIVE RECOVERED</h2>
+    <h2>FORENSIC RECONSTRUCTION NODE</h2>
 
-            <div class="archiveBox">
+    <div id="reconstructionConsole">
 
-                <p>
-                    Viral integration stabilized.
-                </p>
+        <div id="renderStatus">
+            INITIALIZING IMAGE RECONSTRUCTION...
+        </div>
 
-                <p>
-                    Recombinant genome successfully reconstructed.
-                </p>
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+        </div>
 
-                <p>
-                    Facility Theta incident logs unlocked.
-                </p>
+        <div id="renderPercent">0%</div>
 
-                <button id="openArchiveBtn">
-                    OPEN FINAL FILE
-                </button>
+        <div id="imageLabel" class="hidden">
+            RENDERING: image1.jpg
+        </div>
 
-            </div>
+        <div id="imageRenderArea">
 
-        </section>
+            <img
+                id="recoveredImage"
+                src="image1.jpg"
+                alt="Recovered Evidence"
+            >
+
+            <div id="renderOverlay"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
 
     </section>
 
