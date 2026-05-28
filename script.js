@@ -47,12 +47,30 @@ mitoSound.volume = 0.7;
 
 window.addEventListener("DOMContentLoaded", () => {
 
-    const btn = document.getElementById("continueBtn");
+    const continueBtn = document.getElementById("continueBtn");
+    const bootScreen = document.getElementById("bootScreen");
+    const terminalSection = document.getElementById("terminalSection");
 
-    console.log("BUTTON ELEMENT:", btn);
+    console.log("BOOT INIT:", continueBtn, bootScreen, terminalSection);
 
-    btn?.addEventListener("click", () => {
-        alert("BUTTON WORKS");
+    if (!continueBtn || !bootScreen || !terminalSection) return;
+
+    continueBtn.addEventListener("click", () => {
+
+        console.log("BUTTON CLICKED");
+
+        bootScreen.style.display = "none";
+        terminalSection.classList.remove("hidden");
+
+        initSimulation();
+    });
+
+    /* ✅ CLICK SOUND SAFELY INSIDE DOM READY */
+    document.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => {
+            clickSound.currentTime = 0;
+            clickSound.play();
+        });
     });
 
 });
