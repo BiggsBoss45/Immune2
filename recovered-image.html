@@ -195,45 +195,50 @@ body {
 
 <script>
 
-const solved = localStorage.getItem("phase3Solved") === "true";
+const result = localStorage.getItem("phase3Result");
 
 const container = document.getElementById("imageContainer");
 const scanBar = document.getElementById("scanBar");
 const statusText = document.getElementById("statusText");
 const backBtn = document.getElementById("backBtn");
 
-/* BACK BUTTON ALWAYS WORKS */
 backBtn.addEventListener("click", () => {
     window.location.href = "index.html";
 });
 
-/* HARD LOCK */
-if (!solved) {
-    statusText.innerHTML = "ACCESS DENIED // IMAGE DATA CORRUPTED";
+/* FAIL SAFE */
+if (!result) {
+    statusText.innerHTML = "NO DATA FOUND // RETURNING TO SIMULATION";
     container.style.display = "none";
-    throw new Error("Locked");
+    throw new Error("No result");
 }
 
-/* RUN ONLY IF SOLVED */
-runReconstruction();
+/* ROUTER */
+if (result === "correct") {
+    runPixelReconstruction("image1.jpg", false);
+} else {
+    runPixelReconstruction("image2.jpg", true);
+}
 
-function runReconstruction() {
+/* CORE ENGINE */
+function runPixelReconstruction(imageSrc, isCorrupt) {
 
-    const canvas = document.getElementById("canvas");
+    const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
 
+    container.appendChild(canvas);
+
     const img = new Image();
-    img.src = "image1.jpg";
+    img.src = imageSrc;
 
     img.onload = () => {
 
         const w = canvas.width;
         const h = canvas.height;
 
-        /* offscreen buffer */
         const buffer = document.createElement("canvas");
         const bctx = buffer.getContext("2d");
 
@@ -248,37 +253,51 @@ function runReconstruction() {
 
         let i = 0;
 
-        function renderPixels() {
+        function render() {
 
-            const batch = 5000;
+            const speed = isCorrupt ? 12000 : 5000;
 
-            for (let j = 0; j < batch; j++) {
+            for (let j = 0; j < speed; j++) {
 
                 if (i >= data.length) break;
 
                 const x = (i / 4) % w;
                 const y = Math.floor((i / 4) / w);
 
-                ctx.fillStyle = `rgba(${data[i]},${data[i+1]},${data[i+2]},${data[i+3]/255})`;
+                let r = data[i];
+                let g = data[i + 1];
+                let b = data[i + 2];
+                let a = data[i + 3];
+
+                /* CORRUPTION EFFECT */
+                if (isCorrupt && Math.random() < 0.25) {
+                    r = 255;
+                    g = 0;
+                    b = 0;
+                }
+
+                ctx.fillStyle = `rgba(${r},${g},${b},${a / 255})`;
                 ctx.fillRect(x, y, 1, 1);
 
                 i += 4;
             }
 
             if (i < data.length) {
-                requestAnimationFrame(renderPixels);
+                requestAnimationFrame(render);
             } else {
-                statusText.innerHTML = "IMAGE RECONSTRUCTION COMPLETE";
+                statusText.innerHTML = isCorrupt
+                    ? "IMAGE CORRUPTION DETECTED"
+                    : "IMAGE RECONSTRUCTION COMPLETE";
             }
         }
 
-        /* scan animation sync */
+        /* SCAN EFFECT */
         setTimeout(() => {
             scanBar.classList.add("active");
             container.classList.add("glitchFlash");
         }, 600);
 
-        renderPixels();
+        render();
 
         setTimeout(() => {
             scanBar.style.opacity = "0";
